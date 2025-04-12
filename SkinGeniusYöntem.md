@@ -4,9 +4,13 @@ Kullanıcılar, uygulamaya ciltlerinin fotoğraflarını yükleyecek. Bu fotoğr
 
 Kullanılacak Teknolojiler:
 Android Studio: Uygulamanın geliştirilmesi için Android uygulama geliştirme ortamı.
+
 Firebase: Kullanıcı yönetimi (giriş/çıkış), veri depolama ve fotoğrafların saklanması için.
+
 Yapay Zeka (TensorFlow): Cilt fotoğraflarını analiz etmek için görüntü işleme modelini eğitmek.
+
 Firebase Cloud Storage: Kullanıcı fotoğraflarını güvenli bir şekilde saklamak.
+
 TensorFlow Lite: Yapay zeka modelinin mobil cihazda çalıştırılması için.
 
 Bu projede kullanıcıların cilt sağlıklarını daha iyi takip etmelerini sağlamak, erken dönemde cilt sorunlarını tespit etmek ve kişiselleştirilmiş tedavi önerileri sunmak hedefleniyor.
