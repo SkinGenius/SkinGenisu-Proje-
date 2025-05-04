@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="SkinGenius"
+        android:text="@string/app_name"
         android:textColor="@color/purple_700"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -35,7 +35,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
-        android:hint="E-posta"
+        android:hint="@string/email"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -53,7 +53,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:hint="Şifre"
+        android:hint="@string/password"
         app:layout_constraintTop_toBottomOf="@+id/emailLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -72,7 +72,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/pink_500"
-        android:text="Giriş Yap"
+        android:text="@string/login"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
@@ -84,7 +84,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/white"
-        android:text="Google ile Giriş Yap"
+        android:text="@string/google_sign_in"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
@@ -93,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Hesabınız yok mu? Kayıt olun"
+        android:text="@string/no_account"
         android:textColor="@color/purple_700"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
