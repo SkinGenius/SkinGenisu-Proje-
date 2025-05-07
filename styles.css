@@ -39,7 +39,7 @@ body {
 }
 
 .form-header h1 {
-    color: #ff9a9e;
+    color: #F48FB1;
     font-size: 2em;
     margin-bottom: 10px;
 }
@@ -61,14 +61,14 @@ body {
     border: none;
     background: none;
     font-size: 1em;
-    color: #666;
+    color: #F48FB1;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .tab-btn.active {
-    color: #ff9a9e;
-    border-bottom: 2px solid #ff9a9e;
+    color: #F48FB1;
+    border-bottom: 2px solid #F48FB1;
     margin-bottom: -2px;
 }
 
@@ -108,20 +108,20 @@ body {
 
 .form-group input:focus,
 .form-group input:valid {
-    border-bottom-color: #ff9a9e;
+    border-bottom-color: #F48FB1;
 }
 
 .form-group input:focus + label,
 .form-group input:valid + label {
     top: -20px;
     font-size: 0.8em;
-    color: #ff9a9e;
+    color: #F48FB1;
 }
 
 .submit-btn {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    background: linear-gradient(45deg, #F48FB1, #fad0c4);
     border: none;
     border-radius: 25px;
     color: white;
@@ -133,7 +133,7 @@ body {
 
 .submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 154, 158, 0.4);
+    box-shadow: 0 5px 15px rgba(244, 143, 177, 0.4);
 }
 
 .divider {
@@ -171,9 +171,9 @@ body {
     width: 100%;
     padding: 12px;
     background: white;
-    border: 1px solid #ffe3e3;
+    border: 1px solid #F48FB1;
     border-radius: 25px;
-    color: #666;
+    color: #F48FB1;
     font-size: 1em;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -186,6 +186,8 @@ body {
 
 .google-btn:hover {
     background: #f8f8f8;
+    color: #F48FB1;
+    border-color: #F48FB1;
 }
 
 .google-btn img {
@@ -220,12 +222,13 @@ body {
 }
 
 .privacy-link {
-    color: #ff9a9e;
+    color: #F48FB1;
     text-decoration: none;
 }
 
 .privacy-link:hover {
     text-decoration: underline;
+    color: #F48FB1;
 }
 
 .brand-footer {
