@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinGenius - Cilt Analizi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <h1>SkinGenius</h1>
+                <p>Yapay zeka destekli cilt analizi platformuna hoş geldiniz</p>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="login">Giriş Yap</button>
+                <button class="tab-btn" data-tab="register">Kayıt Ol</button>
+            </div>
+
+            <form id="loginForm" class="form active">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" required>
+                    <label for="loginEmail">E-posta</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" required>
+                    <label for="loginPassword">Şifre</label>
+                </div>
+                <button type="submit" class="submit-btn">Giriş Yap</button>
+                <div class="divider">
+                    <span>veya</span>
+                </div>
+                <button type="button" class="google-btn">
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    Google ile Giriş Yap
+                </button>
+                <a href="#" class="forgot-password">Şifremi Unuttum</a>
+            </form>
+
+            <form id="registerForm" class="form">
+                <div class="form-group">
+                    <input type="text" id="registerName" required>
+                    <label for="registerName">Ad Soyad</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="registerEmail" required>
+                    <label for="registerEmail">E-posta</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="registerPassword" required>
+                    <label for="registerPassword">Şifre</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="registerPasswordConfirm" required>
+                    <label for="registerPasswordConfirm">Şifre Tekrar</label>
+                </div>
+                <div class="privacy-policy">
+                    <input type="checkbox" id="privacyCheck" required>
+                    <label for="privacyCheck">
+                        Kişisel verilerimin işlenmesine ve yüz tanıma teknolojisi kullanımına izin veriyorum. 
+                        <a href="#" class="privacy-link">Kişisel Verilerin Korunması</a> hakkında daha fazla bilgi için tıklayın.
+                    </label>
+                </div>
+                <button type="submit" class="submit-btn">Kayıt Ol</button>
+                <div class="divider">
+                    <span>veya</span>
+                </div>
+                <button type="button" class="google-btn">
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    Google ile Kayıt Ol
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
