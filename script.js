@@ -2,12 +2,13 @@
 const firebaseConfig = {
     // Firebase Console'dan alacağınız yapılandırma bilgilerini buraya ekleyin
     apiKey: "AIzaSyB9VGtzN7pgsdBl4XXa_1L6wMjh3T13w-k",
-      authDomain: "skingenius-ea7d0.firebaseapp.com",
-      projectId: "skingenius-ea7d0",
-      storageBucket: "skingenius-ea7d0.firebasestorage.app",
-      messagingSenderId: "770543146334",
-      appId: "1:770543146334:web:2f0d2141934c460c45abcf",
-      measurementId: "G-TYP3GJH5B3"
+    authDomain: "skingenius-ea7d0.firebaseapp.com",
+    projectId: "skingenius-ea7d0",
+    storageBucket: "skingenius-ea7d0.firebasestorage.app",
+    messagingSenderId: "770543146334",
+    appId: "1:770543146334:web:2f0d2141934c460c45abcf",
+    measurementId: "G-TYP3GJH5B3"
+};
 
 // Firebase'i başlat
 firebase.initializeApp(firebaseConfig);
