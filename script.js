@@ -1,3 +1,100 @@
+// Firebase yapılandırması
+const firebaseConfig = {
+    // Firebase Console'dan alacağınız yapılandırma bilgilerini buraya ekleyin
+    apiKey: "AIzaSyB9VGtzN7pgsdBl4XXa_1L6wMjh3T13w-k",
+      authDomain: "skingenius-ea7d0.firebaseapp.com",
+      projectId: "skingenius-ea7d0",
+      storageBucket: "skingenius-ea7d0.firebasestorage.app",
+      messagingSenderId: "770543146334",
+      appId: "1:770543146334:web:2f0d2141934c460c45abcf",
+      measurementId: "G-TYP3GJH5B3"
+
+// Firebase'i başlat
+firebase.initializeApp(firebaseConfig);
+
+// Giriş işlemi
+function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Giriş başarılı
+            const user = userCredential.user;
+            console.log("Giriş başarılı:", user);
+            alert("Giriş başarılı! Hoş geldiniz.");
+            window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+            // Hata durumu
+            let errorMessage = "";
+            switch (error.code) {
+                case 'auth/invalid-email':
+                    errorMessage = "Geçersiz e-posta adresi.";
+                    break;
+                case 'auth/user-disabled':
+                    errorMessage = "Bu hesap devre dışı bırakılmış.";
+                    break;
+                case 'auth/user-not-found':
+                    errorMessage = "Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı.";
+                    break;
+                case 'auth/wrong-password':
+                    errorMessage = "Hatalı şifre.";
+                    break;
+                default:
+                    errorMessage = "Bir hata oluştu: " + error.message;
+            }
+            alert(errorMessage);
+        });
+}
+
+// Kayıt işlemi
+function register() {
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Kayıt başarılı
+            const user = userCredential.user;
+            console.log("Kayıt başarılı:", user);
+            alert("Kayıt işlemi başarılı! Hoş geldiniz.");
+            window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+            // Hata durumu
+            let errorMessage = "";
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    errorMessage = "Bu e-posta adresi zaten kullanımda.";
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = "Geçersiz e-posta adresi.";
+                    break;
+                case 'auth/operation-not-allowed':
+                    errorMessage = "E-posta/şifre girişi etkin değil.";
+                    break;
+                case 'auth/weak-password':
+                    errorMessage = "Şifre çok zayıf. Lütfen daha güçlü bir şifre seçin.";
+                    break;
+                default:
+                    errorMessage = "Bir hata oluştu: " + error.message;
+            }
+            alert(errorMessage);
+        });
+}
+
+// Kullanıcı durumunu dinle
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        // Kullanıcı giriş yapmış
+        console.log("Kullanıcı giriş yapmış:", user);
+    } else {
+        // Kullanıcı çıkış yapmış
+        console.log("Kullanıcı çıkış yapmış");
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // Tab switching
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -102,4 +199,53 @@ document.addEventListener('DOMContentLoaded', () => {
             input.type = input.type === 'password' ? 'text' : 'password';
         });
     });
-}); 
+
+    // Form geçişi için toggle fonksiyonu
+    function toggleForm() {
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        
+        if (loginForm.style.display === 'none') {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        } else {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        }
+    }
+});
+
+// Google ile giriş
+function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+            // Giriş başarılı
+            const user = result.user;
+            console.log("Google ile giriş başarılı:", user);
+            alert("Google ile giriş başarılı! Hoş geldiniz.");
+            window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+            // Hata durumu
+            let errorMessage = "";
+            switch (error.code) {
+                case 'auth/account-exists-with-different-credential':
+                    errorMessage = "Bu e-posta adresi başka bir giriş yöntemiyle kayıtlı.";
+                    break;
+                case 'auth/popup-blocked':
+                    errorMessage = "Popup penceresi engellendi. Lütfen popup engelleyiciyi kapatın.";
+                    break;
+                case 'auth/popup-closed-by-user':
+                    errorMessage = "Giriş işlemi iptal edildi.";
+                    break;
+                case 'auth/cancelled-popup-request':
+                    errorMessage = "Giriş işlemi iptal edildi.";
+                    break;
+                default:
+                    errorMessage = "Bir hata oluştu: " + error.message;
+            }
+            alert(errorMessage);
+        });
+} 

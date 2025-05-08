@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 </head>
 <body>
     <div class="container">
@@ -21,58 +24,42 @@
                 <button class="tab-btn" data-tab="register">Kayıt Ol</button>
             </div>
 
-            <form id="loginForm" class="form active">
-                <div class="form-group">
-                    <input type="email" id="loginEmail" required>
-                    <label for="loginEmail">E-posta</label>
+            <form id="loginForm" onsubmit="event.preventDefault(); login();">
+                <h2>Giriş Yap</h2>
+                <div class="input-group">
+                    <input type="email" id="email" required placeholder="E-posta">
                 </div>
-                <div class="form-group">
-                    <input type="password" id="loginPassword" required>
-                    <label for="loginPassword">Şifre</label>
+                <div class="input-group">
+                    <input type="password" id="password" required placeholder="Şifre">
                 </div>
-                <button type="submit" class="submit-btn">Giriş Yap</button>
+                <button type="submit" class="btn">Giriş Yap</button>
                 <div class="divider">
                     <span>veya</span>
                 </div>
-                <button type="button" class="google-btn">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                <button type="button" class="btn google-btn" onclick="signInWithGoogle()">
+                    <img src="https://www.google.com/favicon.ico" alt="Google" class="google-icon">
                     Google ile Giriş Yap
                 </button>
-                <a href="#" class="forgot-password">Şifremi Unuttum</a>
+                <p class="switch-form">Hesabınız yok mu? <a href="#" onclick="toggleForm()">Kayıt Ol</a></p>
             </form>
 
-            <form id="registerForm" class="form">
-                <div class="form-group">
-                    <input type="text" id="registerName" required>
-                    <label for="registerName">Ad Soyad</label>
+            <form id="registerForm" style="display: none;" onsubmit="event.preventDefault(); register();">
+                <h2>Kayıt Ol</h2>
+                <div class="input-group">
+                    <input type="email" id="registerEmail" required placeholder="E-posta">
                 </div>
-                <div class="form-group">
-                    <input type="email" id="registerEmail" required>
-                    <label for="registerEmail">E-posta</label>
+                <div class="input-group">
+                    <input type="password" id="registerPassword" required placeholder="Şifre">
                 </div>
-                <div class="form-group">
-                    <input type="password" id="registerPassword" required>
-                    <label for="registerPassword">Şifre</label>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="registerPasswordConfirm" required>
-                    <label for="registerPasswordConfirm">Şifre Tekrar</label>
-                </div>
-                <div class="privacy-policy">
-                    <input type="checkbox" id="privacyCheck" required>
-                    <label for="privacyCheck">
-                        Kişisel verilerimin işlenmesine ve yüz tanıma teknolojisi kullanımına izin veriyorum. 
-                        <a href="#" class="privacy-link">Kişisel Verilerin Korunması</a> hakkında daha fazla bilgi için tıklayın.
-                    </label>
-                </div>
-                <button type="submit" class="submit-btn">Kayıt Ol</button>
+                <button type="submit" class="btn">Kayıt Ol</button>
                 <div class="divider">
                     <span>veya</span>
                 </div>
-                <button type="button" class="google-btn">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                <button type="button" class="btn google-btn" onclick="signInWithGoogle()">
+                    <img src="https://www.google.com/favicon.ico" alt="Google" class="google-icon">
                     Google ile Kayıt Ol
                 </button>
+                <p class="switch-form">Zaten hesabınız var mı? <a href="#" onclick="toggleForm()">Giriş Yap</a></p>
             </form>
         </div>
     </div>
