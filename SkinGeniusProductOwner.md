@@ -1,1 +1,0 @@
-Product Owner ile sürekli iletişim halinde kalınarak uygulamanın geliştirilme aşamasını müşteri istek ve ihtiyaçlarına yönelik ilerletmek için ozalyildirim.com web sitesini kullanarak grup içi iletişimi sağladık.
