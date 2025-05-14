@@ -249,4 +249,30 @@ function signInWithGoogle() {
             }
             alert(errorMessage);
         });
+}
+
+// Kullanıcı hesabını silme fonksiyonu
+function deleteAccount() {
+    const user = firebase.auth().currentUser;
+    if (user) {
+        if (confirm('Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) {
+            user.delete()
+                .then(() => {
+                    alert('Hesabınız başarıyla silindi.');
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    // Hesap silme işlemi başarısız olduysa
+                    let errorMessage = '';
+                    if (error.code === 'auth/requires-recent-login') {
+                        errorMessage = 'Hesap silme işlemi için lütfen tekrar giriş yapın.';
+                    } else {
+                        errorMessage = 'Bir hata oluştu: ' + error.message;
+                    }
+                    alert(errorMessage);
+                });
+        }
+    } else {
+        alert('Kullanıcı bulunamadı. Lütfen tekrar giriş yapın.');
+    }
 } 
