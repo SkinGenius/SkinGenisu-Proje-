@@ -20,11 +20,17 @@ function login() {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            // Giriş başarılı
             const user = userCredential.user;
-            console.log("Giriş başarılı:", user);
-            alert("Giriş başarılı! Hoş geldiniz.");
-            window.location.href = "dashboard.html";
+            if (user.emailVerified) {
+                // E-posta doğrulanmışsa girişe izin ver
+                alert("Giriş başarılı! Hoş geldiniz.");
+                window.location.href = "dashboard.html";
+            } else {
+                // E-posta doğrulanmamışsa girişe izin verme
+                alert("Lütfen e-posta adresinizi doğrulayın. Doğrulama maili e-posta adresinize gönderildi.");
+                user.sendEmailVerification(); // Tekrar doğrulama maili gönder
+                firebase.auth().signOut(); // Kullanıcıyı çıkış yaptır
+            }
         })
         .catch((error) => {
             // Hata durumu
