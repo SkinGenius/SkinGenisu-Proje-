@@ -59,8 +59,15 @@ function register() {
             // Kayıt başarılı
             const user = userCredential.user;
             console.log("Kayıt başarılı:", user);
-            alert("Kayıt işlemi başarılı! Hoş geldiniz.");
-            window.location.href = "dashboard.html";
+            // E-posta doğrulama gönder
+            user.sendEmailVerification()
+                .then(() => {
+                    alert("Kayıt işlemi başarılı! Lütfen e-posta adresinizi doğrulayın. Doğrulama maili gönderildi.");
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    alert("Doğrulama e-postası gönderilemedi: " + error.message);
+                });
         })
         .catch((error) => {
             // Hata durumu
@@ -275,4 +282,31 @@ function deleteAccount() {
     } else {
         alert('Kullanıcı bulunamadı. Lütfen tekrar giriş yapın.');
     }
+}
+
+// Şifre sıfırlama fonksiyonu
+function resetPassword() {
+    const email = document.getElementById('email').value;
+    if (!email) {
+        alert('Lütfen şifre sıfırlama için e-posta adresinizi girin.');
+        return;
+    }
+    firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+            alert('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.');
+        })
+        .catch((error) => {
+            let errorMessage = '';
+            switch (error.code) {
+                case 'auth/invalid-email':
+                    errorMessage = 'Geçersiz e-posta adresi.';
+                    break;
+                case 'auth/user-not-found':
+                    errorMessage = 'Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı.';
+                    break;
+                default:
+                    errorMessage = 'Bir hata oluştu: ' + error.message;
+            }
+            alert(errorMessage);
+        });
 } 
