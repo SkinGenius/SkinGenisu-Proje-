@@ -26,33 +26,61 @@
                 <span class="sidebar-close" id="closeSidebar">&times;</span>
                 <span class="sidebar-title">Kategoriler</span>
             </div>
-            <ul class="sidebar-menu">
-                <li>
-                    <a href="login.html" class="sidebar-profile-link">
-                        <span class="material-icons" style="vertical-align: middle; font-size: 22px;">account_circle</span>
-                        <span style="vertical-align: middle; margin-left: 8px;">Profil</span>
-                    </a>
-                </li>
-                <li><a href="#">Kategori 2</a></li>
-                <li><a href="#">Kategori 3</a></li>
-            </ul>
-        </nav>
-        <main>
-            <div class="content-boxes">
-                <div class="input-box">
-                    <h3>Veri Girişi</h3>
-                    <p>Cilt analizi için gerekli bilgileri girin</p>
-                    <button class="cta-button" onclick="window.location.href='login.html'">Analiz Başlat</button>
+
+            <form id="loginForm" class="form active">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" required>
+                    <label for="loginEmail">E-posta</label>
                 </div>
-                <div class="result-box">
-                    <h3>Sonuçlar</h3>
-                    <p>Analiz sonuçlarınız burada görüntülenecek</p>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" required>
+                    <label for="loginPassword">Şifre</label>
                 </div>
-            </div>
-        </main>
-        <footer>
-            <p>&copy; 2023 SkinGenius. Tüm hakları saklıdır.</p>
-        </footer>
+                <button type="submit" class="submit-btn">Giriş Yap</button>
+                <div class="divider">
+                    <span>veya</span>
+                </div>
+                <button type="button" class="google-btn">
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    Google ile Giriş Yap
+                </button>
+                <a href="#" class="forgot-password">Şifremi Unuttum</a>
+            </form>
+
+            <form id="registerForm" class="form">
+                <div class="form-group">
+                    <input type="text" id="registerName" required>
+                    <label for="registerName">Ad Soyad</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="registerEmail" required>
+                    <label for="registerEmail">E-posta</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="registerPassword" required>
+                    <label for="registerPassword">Şifre</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="registerPasswordConfirm" required>
+                    <label for="registerPasswordConfirm">Şifre Tekrar</label>
+                </div>
+                <div class="privacy-policy">
+                    <input type="checkbox" id="privacyCheck" required>
+                    <label for="privacyCheck">
+                        Kişisel verilerimin işlenmesine ve yüz tanıma teknolojisi kullanımına izin veriyorum. 
+                        <a href="#" class="privacy-link">Kişisel Verilerin Korunması</a> hakkında daha fazla bilgi için tıklayın.
+                    </label>
+                </div>
+                <button type="submit" class="submit-btn">Kayıt Ol</button>
+                <div class="divider">
+                    <span>veya</span>
+                </div>
+                <button type="button" class="google-btn">
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    Google ile Kayıt Ol
+                </button>
+            </form>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
