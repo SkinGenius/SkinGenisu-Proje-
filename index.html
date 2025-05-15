@@ -10,6 +10,18 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+    <script>
+        // Firebase SDK'larının yüklendiğini kontrol et
+        window.addEventListener('load', function() {
+            if (typeof firebase === 'undefined') {
+                console.error('Firebase SDK yüklenemedi!');
+                alert('Uygulama başlatılırken bir hata oluştu. Lütfen sayfayı yenileyin.');
+            } else {
+                console.log('Firebase SDK başarıyla yüklendi');
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -33,6 +45,7 @@
                     <input type="password" id="password" required placeholder="Şifre">
                 </div>
                 <button type="submit" class="btn">Giriş Yap</button>
+                <a href="#" class="forgot-password" onclick="resetPassword()">Şifremi Unuttum</a>
                 <div class="divider">
                     <span>veya</span>
                 </div>
