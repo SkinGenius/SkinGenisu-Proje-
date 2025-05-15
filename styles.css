@@ -329,21 +329,33 @@ footer {
 }
 
 .header-categories {
+<<<<<<< HEAD
     position: absolute;
     top: 10px;
     right: 10px;
+=======
+    margin-left: auto;
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
 }
 
 .hamburger-menu {
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     gap: 6px;
     cursor: pointer;
     padding: 10px;
+=======
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
 }
 
 .hamburger-menu span {
     display: block;
+<<<<<<< HEAD
     width: 25px;
     height: 2px;
     background-color: #333;
@@ -354,6 +366,20 @@ footer {
     font-size: 14px;
     color: #666;
     margin-top: 5px;
+=======
+    height: 3px;
+    width: 100%;
+    background: #222;
+    margin: 3px 0;
+    border-radius: 2px;
+}
+
+.categories-text {
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #222;
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
 }
 
 @media (max-width: 768px) {
@@ -364,7 +390,11 @@ footer {
         padding: 30px 0;
     }
     .features {
+<<<<<<< HEAD
         padding: 15px 0;
+=======
+        padding: 10px 0;
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
     }
 }
 
@@ -372,16 +402,24 @@ footer {
     position: fixed;
     top: 0;
     left: 0;
+<<<<<<< HEAD
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 998;
+=======
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 999;
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
     display: none;
 }
 
 .sidebar {
     position: fixed;
     top: 0;
+<<<<<<< HEAD
     right: -300px;
     width: 300px;
     height: 100%;
@@ -394,10 +432,27 @@ footer {
 
 .sidebar.open {
     right: 0;
+=======
+    right: 0;
+    width: 320px;
+    height: 100vh;
+    background: #ffcccb;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
 }
 
 .sidebar-header {
     display: flex;
+<<<<<<< HEAD
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
@@ -415,11 +470,30 @@ footer {
     font-size: 24px;
     cursor: pointer;
     color: #666;
+=======
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid #f8b6b6;
+}
+
+.sidebar-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #d72660;
+}
+
+.sidebar-close {
+    font-size: 28px;
+    cursor: pointer;
+    color: #d72660;
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
 }
 
 .sidebar-menu {
     list-style: none;
     padding: 0;
+<<<<<<< HEAD
 }
 
 .sidebar-menu li {
@@ -457,6 +531,43 @@ body.login-page .form-container {
 main {
     flex: 1;
     padding: 20px 0;
+=======
+    margin: 0;
+}
+
+.sidebar-menu li {
+    border-bottom: 1px solid #f8b6b6;
+}
+
+.sidebar-menu li a {
+    display: block;
+    padding: 18px 24px;
+    color: #222;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+.sidebar-menu li a:hover {
+    background: #ffd6d6;
+}
+
+/* Sadece login.html için kutuyu ortala ve genişliğini ayarla */
+body.login-page .container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body.login-page .form-container {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.97);
+    padding: 40px 32px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(255, 154, 158, 0.15);
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
 }
 
 .site-logo {
@@ -466,6 +577,7 @@ main {
     display: block;
 }
 
+<<<<<<< HEAD
 .content-boxes {
     display: flex;
     gap: 30px;
@@ -534,4 +646,13 @@ main {
     height: 60px;
     margin: 0 auto 30px;
     display: block;
+=======
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+>>>>>>> bf0437c (Logo, arka plan ve ana sayfa tasarım güncellemeleri, login ekranı ve responsive düzenlemeler)
 } 
