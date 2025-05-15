@@ -1,39 +1,78 @@
 // Firebase yapılandırması
 const firebaseConfig = {
-    // Firebase Console'dan alacağınız yapılandırma bilgilerini buraya ekleyin
     apiKey: "AIzaSyB9VGtzN7pgsdBl4XXa_1L6wMjh3T13w-k",
     authDomain: "skingenius-ea7d0.firebaseapp.com",
     projectId: "skingenius-ea7d0",
-    storageBucket: "skingenius-ea7d0.firebasestorage.app",
+    storageBucket: "skingenius-ea7d0.appspot.com",
     messagingSenderId: "770543146334",
     appId: "1:770543146334:web:2f0d2141934c460c45abcf",
     measurementId: "G-TYP3GJH5B3"
 };
 
+// Domain kontrolü
+const currentDomain = window.location.hostname;
+console.log('Mevcut domain:', currentDomain);
+
 // Firebase'i başlat
-firebase.initializeApp(firebaseConfig);
+try {
+    firebase.initializeApp(firebaseConfig);
+    console.log('Firebase başarıyla başlatıldı');
+    
+    // Domain kontrolü
+    if (currentDomain === 'localhost' || currentDomain === '127.0.0.1') {
+        console.log('Geliştirme ortamında çalışıyor');
+    } else {
+        console.log('Production ortamında çalışıyor');
+    }
+} catch (error) {
+    console.error('Firebase başlatma hatası:', error);
+}
+
+// Firebase servislerinin hazır olduğunu kontrol et
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        console.log('Firebase Auth servisi hazır, kullanıcı durumu:', user);
+    } else {
+        console.log('Firebase Auth servisi hazır, kullanıcı giriş yapmamış');
+    }
+});
 
 // Giriş işlemi
 function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
+    console.log('Giriş denemesi:', { email }); // Şifreyi loglamıyoruz güvenlik için
+
+    if (!email || !password) {
+        alert('Lütfen e-posta ve şifre alanlarını doldurun.');
+        return;
+    }
+
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             const user = userCredential.user;
+            console.log('Firebase auth başarılı:', user);
+            
             if (user.emailVerified) {
-                // E-posta doğrulanmışsa girişe izin ver
+                console.log('E-posta doğrulanmış, giriş yapılıyor...');
                 alert("Giriş başarılı! Hoş geldiniz.");
                 window.location.href = "dashboard.html";
             } else {
-                // E-posta doğrulanmamışsa girişe izin verme
-                alert("Lütfen e-posta adresinizi doğrulayın. Doğrulama maili e-posta adresinize gönderildi.");
-                user.sendEmailVerification(); // Tekrar doğrulama maili gönder
-                firebase.auth().signOut(); // Kullanıcıyı çıkış yaptır
+                console.log('E-posta doğrulanmamış, doğrulama maili gönderiliyor...');
+                user.sendEmailVerification()
+                    .then(() => {
+                        alert("Lütfen e-posta adresinizi doğrulayın. Yeni doğrulama maili e-posta adresinize gönderildi.");
+                    })
+                    .catch((error) => {
+                        console.error('Doğrulama maili gönderme hatası:', error);
+                        alert("Doğrulama maili gönderilemedi: " + error.message);
+                    });
+                firebase.auth().signOut();
             }
         })
         .catch((error) => {
-            // Hata durumu
+            console.error('Giriş hatası:', error);
             let errorMessage = "";
             switch (error.code) {
                 case 'auth/invalid-email':
@@ -97,17 +136,6 @@ function register() {
             alert(errorMessage);
         });
 }
-
-// Kullanıcı durumunu dinle
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        // Kullanıcı giriş yapmış
-        console.log("Kullanıcı giriş yapmış:", user);
-    } else {
-        // Kullanıcı çıkış yapmış
-        console.log("Kullanıcı çıkış yapmış");
-    }
-});
 
 document.addEventListener('DOMContentLoaded', () => {
     // Tab switching
