@@ -160,64 +160,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-
-        // Basic validation
-        if (!email || !password) {
-            alert('Lütfen tüm alanları doldurun.');
-            return;
-        }
-
-        // Here you would typically make an API call to your backend
-        console.log('Login attempt:', { email, password });
-        // For now, just show a success message
-        alert('Giriş başarılı!');
+        login();
     });
 
     registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const name = document.getElementById('registerName').value;
-        const email = document.getElementById('registerEmail').value;
-        const password = document.getElementById('registerPassword').value;
-        const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
-        const privacyCheck = document.getElementById('privacyCheck').checked;
-
-        // Basic validation
-        if (!name || !email || !password || !passwordConfirm) {
-            alert('Lütfen tüm alanları doldurun.');
-            return;
-        }
-
-        if (password !== passwordConfirm) {
-            alert('Şifreler eşleşmiyor!');
-            return;
-        }
-
-        if (password.length < 6) {
-            alert('Şifre en az 6 karakter olmalıdır.');
-            return;
-        }
-
-        if (!privacyCheck) {
-            alert('Lütfen kişisel verilerin işlenmesine izin verin.');
-            return;
-        }
-
-        // Here you would typically make an API call to your backend
-        console.log('Register attempt:', { name, email, password });
-        // For now, just show a success message
-        alert('Kayıt başarılı!');
-    });
-
-    // Google login/register buttons
-    const googleBtns = document.querySelectorAll('.google-btn');
-    googleBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Here you would implement Google OAuth
-            console.log('Google login/register clicked');
-            alert('Google ile giriş özelliği yakında eklenecek!');
-        });
+        register();
     });
 
     // Password visibility toggle
@@ -261,16 +209,27 @@ document.addEventListener('DOMContentLoaded', () => {
 function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     
+    // Google giriş popup'ını aç
     firebase.auth().signInWithPopup(provider)
         .then((result) => {
             // Giriş başarılı
             const user = result.user;
             console.log("Google ile giriş başarılı:", user);
-            alert("Google ile giriş başarılı! Hoş geldiniz.");
-            window.location.href = "dashboard.html";
+            
+            // Kullanıcı bilgilerini kontrol et
+            if (user.emailVerified) {
+                alert("Google ile giriş başarılı! Hoş geldiniz.");
+                window.location.href = "dashboard.html";
+            } else {
+                // Google hesabı zaten doğrulanmış olduğu için bu duruma düşmemeli
+                console.log("Google hesabı doğrulanmış:", user);
+                alert("Google ile giriş başarılı! Hoş geldiniz.");
+                window.location.href = "dashboard.html";
+            }
         })
         .catch((error) => {
             // Hata durumu
+            console.error("Google giriş hatası:", error);
             let errorMessage = "";
             switch (error.code) {
                 case 'auth/account-exists-with-different-credential':
