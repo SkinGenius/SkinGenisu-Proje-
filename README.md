@@ -1,38 +1,50 @@
-# SkinGenius Projesi
+# SkinGenius Web Uygulaması
 
-Bu proje, cilt bakımı ve analizi konusunda kullanıcılara yardımcı olmayı amaçlayan bir mobil uygulama projesidir.
+SkinGenius, yapay zeka destekli cilt analizi platformudur. Bu web uygulaması, kullanıcıların cilt durumlarını analiz etmelerine ve kişiselleştirilmiş bakım önerileri almalarına olanak sağlar.
 
-## Proje İçeriği
+## Özellikler
 
-- `app/`: Android uygulama modülü
-- `gradle/`: Gradle yapılandırma dosyaları
-- `build.gradle`: Proje seviyesi Gradle yapılandırması
-- `settings.gradle`: Gradle ayarları
-- `SkinGeniusFikir.md`: Proje fikri ve konsepti
-- `SkinGeniusYöntem.md`: Proje yöntemleri ve yaklaşımı
-- `SkinGeniusProductOwner.md`: Ürün sahibi bilgileri
+- Kullanıcı kaydı ve girişi
+- Modern ve kullanıcı dostu arayüz
+- Responsive tasarım
+- Güvenli form doğrulama
 
-## İndirme Talimatları
+## Teknolojiler
 
-Projeyi indirmek için aşağıdaki adımları izleyin:
+- HTML5
+- CSS3
+- JavaScript (Vanilla)
 
-1. GitHub sayfasına gidin
-2. "Code" butonuna tıklayın
-3. "Download ZIP" seçeneğini seçin
-4. İndirilen ZIP dosyasını açın
+## Kurulum
 
-Alternatif olarak, Git kullanıyorsanız:
-
+1. Projeyi klonlayın:
 ```bash
-git clone https://github.com/[kullanıcı-adı]/SkinGenius-Proje-.git
+git clone [repo-url]
 ```
 
-## Gereksinimler
+2. Proje dizinine gidin:
+```bash
+cd skingenius-web
+```
 
-- Android Studio
-- Java Development Kit (JDK)
-- Android SDK
+3. `index.html` dosyasını bir web tarayıcısında açın.
+
+## Geliştirme
+
+Projeyi geliştirmek için:
+
+1. Yeni özellikler için yeni branch oluşturun
+2. Değişikliklerinizi commit edin
+3. Pull request oluşturun
+
+## Katkıda Bulunma
+
+1. Bu repository'yi fork edin
+2. Feature branch'i oluşturun (`git checkout -b feature/amazing-feature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add some amazing feature'`)
+4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
+5. Pull Request oluşturun
 
 ## Lisans
 
-Bu proje MIT lisansı altında lisanslanmıştır. 
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakın. 
