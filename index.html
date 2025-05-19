@@ -39,48 +39,89 @@
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <span class="sidebar-close" id="closeSidebar">&times;</span>
-                <span class="sidebar-title">Kategoriler</span>
+                <span class="sidebar-title">SkinGenius</span>
             </div>
 
-            <form id="loginForm" onsubmit="event.preventDefault(); login();">
-                <h2>Giriş Yap</h2>
-                <div class="input-group">
-                    <input type="email" id="email" required placeholder="E-posta">
+            <!-- Kullanıcı Profil Bölümü -->
+            <div id="userProfile" style="display: none;">
+                <div class="profile-section">
+                    <img src="default-avatar.png" alt="Profil" class="profile-image" id="userProfileImage">
+                    <div class="profile-info">
+                        <h3 id="userName">Kullanıcı Adı</h3>
+                        <p id="userEmail">kullanici@email.com</p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <input type="password" id="password" required placeholder="Şifre">
+                <div class="profile-actions">
+                    <a href="profile.html" class="profile-link">
+                        <span class="material-icons">person</span>
+                        Profilim
+                    </a>
+                    <a href="settings.html" class="profile-link">
+                        <span class="material-icons">settings</span>
+                        Ayarlar
+                    </a>
+                    <button onclick="logout()" class="profile-link logout-btn">
+                        <span class="material-icons">logout</span>
+                        Çıkış Yap
+                    </button>
                 </div>
-                <button type="submit" class="btn">Giriş Yap</button>
-                <a href="#" class="forgot-password" onclick="resetPassword()">Şifremi Unuttum</a>
-                <div class="divider">
-                    <span>veya</span>
-                </div>
-                <button type="button" class="btn google-btn" onclick="signInWithGoogle()">
-                    <img src="https://www.google.com/favicon.ico" alt="Google" class="google-icon">
-                    Google ile Giriş Yap
-                </button>
-                <p class="switch-form">Hesabınız yok mu? <a href="#" onclick="toggleForm()">Kayıt Ol</a></p>
-            </form>
+            </div>
 
-            <form id="registerForm" style="display: none;" onsubmit="event.preventDefault(); register();">
-                <h2>Kayıt Ol</h2>
-                <div class="input-group">
-                    <input type="email" id="registerEmail" required placeholder="E-posta">
+            <!-- Giriş Yapmamış Kullanıcılar İçin -->
+            <div id="guestProfile">
+                <div class="profile-section">
+                    <img src="default-avatar.png" alt="Misafir" class="profile-image">
+                    <div class="profile-info">
+                        <h3>Misafir Kullanıcı</h3>
+                        <p>Giriş yaparak tüm özelliklere erişin</p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <input type="password" id="registerPassword" required placeholder="Şifre">
+                <div class="profile-actions">
+                    <a href="login.html" class="profile-link">
+                        <span class="material-icons">login</span>
+                        Giriş Yap
+                    </a>
+                    <a href="register.html" class="profile-link">
+                        <span class="material-icons">person_add</span>
+                        Kayıt Ol
+                    </a>
                 </div>
-                <button type="submit" class="btn">Kayıt Ol</button>
-                <div class="divider">
-                    <span>veya</span>
-                </div>
-                <button type="button" class="btn google-btn" onclick="signInWithGoogle()">
-                    <img src="https://www.google.com/favicon.ico" alt="Google" class="google-icon">
-                    Google ile Kayıt Ol
-                </button>
-                <p class="switch-form">Zaten hesabınız var mı? <a href="#" onclick="toggleForm()">Giriş Yap</a></p>
-            </form>
-        </div>
+            </div>
+
+            <!-- Ana Menü -->
+            <div class="menu-section">
+                <h3>Ana Menü</h3>
+                <a href="index.html" class="menu-link">
+                    <span class="material-icons">home</span>
+                    Ana Sayfa
+                </a>
+                <a href="analysis.html" class="menu-link">
+                    <span class="material-icons">face</span>
+                    Cilt Analizi
+                </a>
+                <a href="products.html" class="menu-link">
+                    <span class="material-icons">spa</span>
+                    Ürünler
+                </a>
+                <a href="blog.html" class="menu-link">
+                    <span class="material-icons">article</span>
+                    Blog
+                </a>
+            </div>
+
+            <!-- Destek -->
+            <div class="menu-section">
+                <h3>Destek</h3>
+                <a href="faq.html" class="menu-link">
+                    <span class="material-icons">help</span>
+                    Sık Sorulan Sorular
+                </a>
+                <a href="contact.html" class="menu-link">
+                    <span class="material-icons">contact_support</span>
+                    İletişim
+                </a>
+            </div>
+        </nav>
     </div>
     <script src="script.js"></script>
 </body>

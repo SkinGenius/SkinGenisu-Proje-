@@ -171,6 +171,14 @@ document.addEventListener('DOMContentLoaded', () => {
             register();
         });
     }
+
+    // Sidebar'ı güncelle
+    updateSidebarContent();
+
+    // Auth durumu değişikliklerini dinle
+    firebase.auth().onAuthStateChanged((user) => {
+        updateSidebarContent();
+    });
 });
 
 // Google giriş işlemleri
@@ -249,4 +257,47 @@ if (openSidebar && closeSidebar && sidebar && overlay) {
     openSidebar.addEventListener('click', openMenu);
     closeSidebar.addEventListener('click', closeMenu);
     overlay.addEventListener('click', closeMenu);
+}
+
+// Kullanıcı durumunu kontrol et ve sidebar'ı güncelle
+function updateSidebarContent() {
+    const userProfile = document.getElementById('userProfile');
+    const guestProfile = document.getElementById('guestProfile');
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+        // Kullanıcı giriş yapmış
+        userProfile.style.display = 'block';
+        guestProfile.style.display = 'none';
+        
+        // Kullanıcı bilgilerini güncelle
+        document.getElementById('userName').textContent = user.displayName || 'Kullanıcı';
+        document.getElementById('userEmail').textContent = user.email;
+        
+        // Profil resmini güncelle
+        const profileImage = document.getElementById('userProfileImage');
+        if (user.photoURL) {
+            profileImage.src = user.photoURL;
+        } else {
+            profileImage.src = 'default-avatar.png';
+        }
+    } else {
+        // Kullanıcı giriş yapmamış
+        userProfile.style.display = 'none';
+        guestProfile.style.display = 'block';
+    }
+}
+
+// Çıkış yapma fonksiyonu
+function logout() {
+    firebase.auth().signOut()
+        .then(() => {
+            console.log('Çıkış yapıldı');
+            updateSidebarContent();
+            window.location.href = 'index.html';
+        })
+        .catch((error) => {
+            console.error('Çıkış yapma hatası:', error);
+            alert('Çıkış yapılırken bir hata oluştu. Lütfen tekrar deneyin.');
+        });
 }
