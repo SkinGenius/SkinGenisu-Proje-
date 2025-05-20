@@ -57,7 +57,7 @@ function login() {
             if (user.emailVerified) {
                 console.log('E-posta doğrulanmış, giriş yapılıyor...');
                 alert("Giriş başarılı! Hoş geldiniz.");
-                window.location.href = "dashboard.html";
+                window.location.href = "index.html";
             } else {
                 console.log('E-posta doğrulanmamış, doğrulama maili gönderiliyor...');
                 user.sendEmailVerification()
@@ -195,12 +195,12 @@ function signInWithGoogle() {
             // Kullanıcı bilgilerini kontrol et
             if (user.emailVerified) {
                 alert("Google ile giriş başarılı! Hoş geldiniz.");
-                window.location.href = "dashboard.html";
+                window.location.href = "index.html";
             } else {
                 // Google hesabı zaten doğrulanmış olduğu için bu duruma düşmemeli
                 console.log("Google hesabı doğrulanmış:", user);
                 alert("Google ile giriş başarılı! Hoş geldiniz.");
-                window.location.href = "dashboard.html";
+                window.location.href = "index.html";
             }
         })
         .catch((error) => {
