@@ -142,67 +142,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const forms = document.querySelectorAll('.form');
 
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all buttons and forms
-            tabBtns.forEach(b => b.classList.remove('active'));
-            forms.forEach(f => f.classList.remove('active'));
+    if (tabBtns.length && forms.length) {
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons and forms
+                tabBtns.forEach(b => b.classList.remove('active'));
+                forms.forEach(f => f.classList.remove('active'));
 
-            // Add active class to clicked button and corresponding form
-            btn.classList.add('active');
-            document.getElementById(`${btn.dataset.tab}Form`).classList.add('active');
+                // Add active class to clicked button and corresponding form
+                btn.classList.add('active');
+                document.getElementById(`${btn.dataset.tab}Form`).classList.add('active');
+            });
         });
-    });
+    }
 
     // Form validation and submission
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        login();
-    });
-
-    registerForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        register();
-    });
-
-    // Password visibility toggle
-    const passwordInputs = document.querySelectorAll('input[type="password"]');
-    passwordInputs.forEach(input => {
-        const toggleBtn = document.createElement('button');
-        toggleBtn.type = 'button';
-        toggleBtn.innerHTML = '👁️';
-        toggleBtn.style.position = 'absolute';
-        toggleBtn.style.right = '0';
-        toggleBtn.style.top = '50%';
-        toggleBtn.style.transform = 'translateY(-50%)';
-        toggleBtn.style.background = 'none';
-        toggleBtn.style.border = 'none';
-        toggleBtn.style.cursor = 'pointer';
-        
-        input.parentElement.style.position = 'relative';
-        input.parentElement.appendChild(toggleBtn);
-
-        toggleBtn.addEventListener('click', () => {
-            input.type = input.type === 'password' ? 'text' : 'password';
+    if (loginForm && registerForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            login();
         });
-    });
 
-    // Form geçişi için toggle fonksiyonu
-    function toggleForm() {
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        
-        if (loginForm.style.display === 'none') {
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
-        } else {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-        }
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            register();
+        });
     }
+
+    // Sidebar'ı güncelle
+    updateSidebarContent();
+
+    // Auth durumu değişikliklerini dinle
+    firebase.auth().onAuthStateChanged((user) => {
+        updateSidebarContent();
+    });
 });
 
 // Google ile giriş
@@ -251,55 +227,65 @@ function signInWithGoogle() {
         });
 }
 
-// Kullanıcı hesabını silme fonksiyonu
-function deleteAccount() {
+// Sidebar açma/kapama
+const openSidebar = document.getElementById('openSidebar');
+const closeSidebar = document.getElementById('closeSidebar');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
+
+if (openSidebar && closeSidebar && sidebar && overlay) {
+    function openMenu() {
+        sidebar.classList.add('open');
+        overlay.style.display = 'block';
+    }
+    function closeMenu() {
+        sidebar.classList.remove('open');
+        overlay.style.display = 'none';
+    }
+    openSidebar.addEventListener('click', openMenu);
+    closeSidebar.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+}
+
+// Kullanıcı durumunu kontrol et ve sidebar'ı güncelle
+function updateSidebarContent() {
+    const userProfile = document.getElementById('userProfile');
+    const guestProfile = document.getElementById('guestProfile');
     const user = firebase.auth().currentUser;
+
     if (user) {
-        if (confirm('Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) {
-            user.delete()
-                .then(() => {
-                    alert('Hesabınız başarıyla silindi.');
-                    window.location.href = 'index.html';
-                })
-                .catch((error) => {
-                    // Hesap silme işlemi başarısız olduysa
-                    let errorMessage = '';
-                    if (error.code === 'auth/requires-recent-login') {
-                        errorMessage = 'Hesap silme işlemi için lütfen tekrar giriş yapın.';
-                    } else {
-                        errorMessage = 'Bir hata oluştu: ' + error.message;
-                    }
-                    alert(errorMessage);
-                });
+        // Kullanıcı giriş yapmış
+        userProfile.style.display = 'block';
+        guestProfile.style.display = 'none';
+        
+        // Kullanıcı bilgilerini güncelle
+        document.getElementById('userName').textContent = user.displayName || 'Kullanıcı';
+        document.getElementById('userEmail').textContent = user.email;
+        
+        // Profil resmini güncelle
+        const profileImage = document.getElementById('userProfileImage');
+        if (user.photoURL) {
+            profileImage.src = user.photoURL;
+        } else {
+            profileImage.src = 'default-avatar.png';
         }
     } else {
-        alert('Kullanıcı bulunamadı. Lütfen tekrar giriş yapın.');
+        // Kullanıcı giriş yapmamış
+        userProfile.style.display = 'none';
+        guestProfile.style.display = 'block';
     }
 }
 
-// Şifre sıfırlama fonksiyonu
-function resetPassword() {
-    const email = document.getElementById('email').value;
-    if (!email) {
-        alert('Lütfen şifre sıfırlama için e-posta adresinizi girin.');
-        return;
-    }
-    firebase.auth().sendPasswordResetEmail(email)
+// Çıkış yapma fonksiyonu
+function logout() {
+    firebase.auth().signOut()
         .then(() => {
-            alert('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.');
+            console.log('Çıkış yapıldı');
+            updateSidebarContent();
+            window.location.href = 'index.html';
         })
         .catch((error) => {
-            let errorMessage = '';
-            switch (error.code) {
-                case 'auth/invalid-email':
-                    errorMessage = 'Geçersiz e-posta adresi.';
-                    break;
-                case 'auth/user-not-found':
-                    errorMessage = 'Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı.';
-                    break;
-                default:
-                    errorMessage = 'Bir hata oluştu: ' + error.message;
-            }
-            alert(errorMessage);
+            console.error('Çıkış yapma hatası:', error);
+            alert('Çıkış yapılırken bir hata oluştu. Lütfen tekrar deneyin.');
         });
-} 
+}
