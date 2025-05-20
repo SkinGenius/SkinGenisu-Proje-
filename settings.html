@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayarlar - SkinGenius</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="SkinGenius Logo" class="site-logo">
+            <div class="header-categories">
+                <span class="hamburger-menu" id="openSidebar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-close" id="closeSidebar">&times;</span>
+                <span class="sidebar-title">SkinGenius</span>
+            </div>
+
+            <!-- Kullanıcı Profil Bölümü -->
+            <div id="userProfile" style="display: none;">
+                <div class="profile-section">
+                    <img src="default-avatar.png" alt="Profil" class="profile-image" id="userProfileImage">
+                    <div class="profile-info">
+                        <h3 id="userName">Kullanıcı Adı</h3>
+                        <p id="userEmail">kullanici@email.com</p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <a href="profile.html" class="profile-link">
+                        <span class="material-icons">person</span>
+                        Profilim
+                    </a>
+                    <a href="settings.html" class="profile-link">
+                        <span class="material-icons">settings</span>
+                        Ayarlar
+                    </a>
+                    <button onclick="logout()" class="profile-link logout-btn">
+                        <span class="material-icons">logout</span>
+                        Çıkış Yap
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ana Menü -->
+            <div class="menu-section">
+                <h3>Ana Menü</h3>
+                <a href="index.html" class="menu-link">
+                    <span class="material-icons">home</span>
+                    Ana Sayfa
+                </a>
+                <a href="analysis.html" class="menu-link">
+                    <span class="material-icons">face</span>
+                    Cilt Analizi
+                </a>
+                <a href="products.html" class="menu-link">
+                    <span class="material-icons">spa</span>
+                    Ürünler
+                </a>
+                <a href="settings.html" class="menu-link active">
+                    <span class="material-icons">settings</span>
+                    Ayarlar
+                </a>
+            </div>
+
+            <!-- Destek -->
+            <div class="menu-section">
+                <h3>Destek</h3>
+                <a href="faq.html" class="menu-link">
+                    <span class="material-icons">help</span>
+                    Sık Sorulan Sorular
+                </a>
+                <a href="contact.html" class="menu-link">
+                    <span class="material-icons">contact_support</span>
+                    İletişim
+                </a>
+            </div>
+        </nav>
+
+        <!-- Ana İçerik -->
+        <main class="settings-page">
+            <h1>Ayarlar</h1>
+            
+            <div class="settings-section">
+                <h2>Hesap Ayarları</h2>
+                <div class="settings-group">
+                    <label>E-posta Bildirimleri</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="emailNotifications" checked>
+                        <label for="emailNotifications"></label>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <label>Analiz Sonuçları Bildirimleri</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="analysisNotifications" checked>
+                        <label for="analysisNotifications"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2>Görünüm</h2>
+                <div class="settings-group">
+                    <label>Tema</label>
+                    <select id="themeSelect">
+                        <option value="light">Açık Tema</option>
+                        <option value="dark">Koyu Tema</option>
+                        <option value="system">Sistem Teması</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label>Yazı Boyutu</label>
+                    <select id="fontSizeSelect">
+                        <option value="small">Küçük</option>
+                        <option value="medium" selected>Orta</option>
+                        <option value="large">Büyük</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2>Gizlilik</h2>
+                <div class="settings-group">
+                    <label>Veri Toplama</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="dataCollection" checked>
+                        <label for="dataCollection"></label>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <label>Kişiselleştirilmiş Öneriler</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="personalizedSuggestions" checked>
+                        <label for="personalizedSuggestions"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h2>Dil</h2>
+                <div class="settings-group">
+                    <label>Uygulama Dili</label>
+                    <select id="languageSelect">
+                        <option value="tr" selected>Türkçe</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-actions">
+                <button class="save-settings-btn">Değişiklikleri Kaydet</button>
+                <button class="reset-settings-btn">Varsayılana Sıfırla</button>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
