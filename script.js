@@ -191,6 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
     firebase.auth().onAuthStateChanged((user) => {
         updateSidebarContent();
     });
+
+    initializeSettings();
 });
 
 // Google ile giriş
@@ -300,4 +302,103 @@ function logout() {
             console.error('Çıkış yapma hatası:', error);
             alert('Çıkış yapılırken bir hata oluştu. Lütfen tekrar deneyin.');
         });
+}
+
+// Ayarlar sayfası fonksiyonları
+function initializeSettings() {
+    // Ayarları localStorage'dan yükle
+    loadSettings();
+
+    // Event listener'ları ekle
+    document.querySelector('.save-settings-btn')?.addEventListener('click', saveSettings);
+    document.querySelector('.reset-settings-btn')?.addEventListener('click', resetSettings);
+
+    // Tema değişikliği
+    document.getElementById('themeSelect')?.addEventListener('change', function(e) {
+        applyTheme(e.target.value);
+    });
+
+    // Yazı boyutu değişikliği
+    document.getElementById('fontSizeSelect')?.addEventListener('change', function(e) {
+        applyFontSize(e.target.value);
+    });
+
+    // Dil değişikliği
+    document.getElementById('languageSelect')?.addEventListener('change', function(e) {
+        applyLanguage(e.target.value);
+    });
+}
+
+function loadSettings() {
+    const settings = JSON.parse(localStorage.getItem('settings')) || {
+        emailNotifications: true,
+        analysisNotifications: true,
+        theme: 'light',
+        fontSize: 'medium',
+        dataCollection: true,
+        personalizedSuggestions: true,
+        language: 'tr'
+    };
+
+    // Ayarları form elemanlarına uygula
+    document.getElementById('emailNotifications').checked = settings.emailNotifications;
+    document.getElementById('analysisNotifications').checked = settings.analysisNotifications;
+    document.getElementById('themeSelect').value = settings.theme;
+    document.getElementById('fontSizeSelect').value = settings.fontSize;
+    document.getElementById('dataCollection').checked = settings.dataCollection;
+    document.getElementById('personalizedSuggestions').checked = settings.personalizedSuggestions;
+    document.getElementById('languageSelect').value = settings.language;
+
+    // Ayarları uygula
+    applyTheme(settings.theme);
+    applyFontSize(settings.fontSize);
+    applyLanguage(settings.language);
+}
+
+function saveSettings() {
+    const settings = {
+        emailNotifications: document.getElementById('emailNotifications').checked,
+        analysisNotifications: document.getElementById('analysisNotifications').checked,
+        theme: document.getElementById('themeSelect').value,
+        fontSize: document.getElementById('fontSizeSelect').value,
+        dataCollection: document.getElementById('dataCollection').checked,
+        personalizedSuggestions: document.getElementById('personalizedSuggestions').checked,
+        language: document.getElementById('languageSelect').value
+    };
+
+    localStorage.setItem('settings', JSON.stringify(settings));
+    alert('Ayarlar başarıyla kaydedildi!');
+}
+
+function resetSettings() {
+    if (confirm('Tüm ayarlar varsayılan değerlerine sıfırlanacak. Emin misiniz?')) {
+        localStorage.removeItem('settings');
+        loadSettings();
+        alert('Ayarlar varsayılan değerlerine sıfırlandı!');
+    }
+}
+
+function applyTheme(theme) {
+    document.body.className = theme;
+    if (theme === 'dark') {
+        document.body.style.backgroundColor = '#1a1a1a';
+        document.body.style.color = '#fff';
+    } else {
+        document.body.style.backgroundColor = '#fcf8f3';
+        document.body.style.color = '#333';
+    }
+}
+
+function applyFontSize(size) {
+    const sizes = {
+        small: '14px',
+        medium: '16px',
+        large: '18px'
+    };
+    document.body.style.fontSize = sizes[size];
+}
+
+function applyLanguage(lang) {
+    // Dil değişikliği için sayfayı yeniden yükle
+    window.location.href = `${window.location.pathname}?lang=${lang}`;
 }
