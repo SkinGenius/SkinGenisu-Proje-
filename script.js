@@ -143,6 +143,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const forms = document.querySelectorAll('.form');
 
     if (tabBtns.length && forms.length) {
+        // URL'den tab parametresini al
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTab = urlParams.get('tab');
+
+        // Eğer URL'de tab parametresi varsa ve register ise, register sekmesini aktif et
+        if (activeTab === 'register') {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            forms.forEach(f => f.classList.remove('active'));
+            document.querySelector('[data-tab="register"]').classList.add('active');
+            document.getElementById('registerForm').classList.add('active');
+        }
+
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 // Remove active class from all buttons and forms
