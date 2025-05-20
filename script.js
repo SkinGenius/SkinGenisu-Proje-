@@ -181,63 +181,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Google giriş işlemleri
-function initGoogleAuth() {
-    // Google OAuth 2.0 client ID
-    const clientId = 'YOUR_GOOGLE_CLIENT_ID';
+// Google ile giriş
+function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
     
-    // Google API'yi yükle
-    gapi.load('auth2', () => {
-        gapi.auth2.init({
-            client_id: clientId,
-            scope: 'email profile'
-        }).then(() => {
-            console.log('Google API başarıyla yüklendi');
-            // Google giriş butonlarına tıklama olaylarını ekle
-            document.querySelectorAll('.google-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    console.log('Google giriş butonuna tıklandı');
-                    handleGoogleSignIn();
-                });
-            });
-        }).catch(error => {
-            console.error('Google API yükleme hatası:', error);
-        });
-    });
-}
-
-function handleGoogleSignIn() {
-    console.log('handleGoogleSignIn fonksiyonu çağrıldı');
-    const auth2 = gapi.auth2.getAuthInstance();
-    auth2.signIn().then(
-        (googleUser) => {
-            // Başarılı giriş
-            const profile = googleUser.getBasicProfile();
-            const userData = {
-                id: profile.getId(),
-                name: profile.getName(),
-                email: profile.getEmail(),
-                imageUrl: profile.getImageUrl()
-            };
+    // Google giriş popup'ını aç
+    firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+            // Giriş başarılı
+            const user = result.user;
+            console.log("Google ile giriş başarılı:", user);
             
-            console.log('Google giriş başarılı:', userData);
-            alert('Google ile giriş başarılı! Hoş geldiniz, ' + userData.name);
-        },
-        (error) => {
-            console.error('Google giriş hatası:', error);
-            alert('Google ile giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.');
-        }
-    );
+            // Kullanıcı bilgilerini kontrol et
+            if (user.emailVerified) {
+                alert("Google ile giriş başarılı! Hoş geldiniz.");
+                window.location.href = "dashboard.html";
+            } else {
+                // Google hesabı zaten doğrulanmış olduğu için bu duruma düşmemeli
+                console.log("Google hesabı doğrulanmış:", user);
+                alert("Google ile giriş başarılı! Hoş geldiniz.");
+                window.location.href = "dashboard.html";
+            }
+        })
+        .catch((error) => {
+            // Hata durumu
+            console.error("Google giriş hatası:", error);
+            let errorMessage = "";
+            switch (error.code) {
+                case 'auth/account-exists-with-different-credential':
+                    errorMessage = "Bu e-posta adresi başka bir giriş yöntemiyle kayıtlı.";
+                    break;
+                case 'auth/popup-blocked':
+                    errorMessage = "Popup penceresi engellendi. Lütfen popup engelleyiciyi kapatın.";
+                    break;
+                case 'auth/popup-closed-by-user':
+                    errorMessage = "Giriş işlemi iptal edildi.";
+                    break;
+                case 'auth/cancelled-popup-request':
+                    errorMessage = "Giriş işlemi iptal edildi.";
+                    break;
+                default:
+                    errorMessage = "Bir hata oluştu: " + error.message;
+            }
+            alert(errorMessage);
+        });
 }
-
-// Sayfa yüklendiğinde Google API'yi yükle
-const script = document.createElement('script');
-script.src = 'https://apis.google.com/js/platform.js';
-script.onload = () => {
-    console.log('Google API script yüklendi');
-    initGoogleAuth();
-};
-document.body.appendChild(script);
 
 // Sidebar açma/kapama
 const openSidebar = document.getElementById('openSidebar');
