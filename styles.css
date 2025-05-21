@@ -7,8 +7,8 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #fcf8f3; /* Daha açık bej arka plan */
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
 }
@@ -33,8 +33,8 @@ header {
     justify-content: space-between;
     padding: 20px;
     position: relative;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: var(--header-bg);
+    box-shadow: 0 2px 5px var(--shadow-color);
 }
 
 .logo {
@@ -86,7 +86,7 @@ header {
 .hero {
     text-align: center;
     padding: 60px 20px;
-    background: linear-gradient(45deg, #fff5f5, #fff);
+    background: linear-gradient(45deg, var(--card-bg), var(--bg-color));
     border-radius: 20px;
     margin: 40px 0;
 }
@@ -106,7 +106,7 @@ header {
 .cta-button {
     display: inline-block;
     padding: 15px 30px;
-    background: linear-gradient(45deg, #F48FB1, #fad0c4);
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     color: white;
     text-decoration: none;
     border-radius: 25px;
@@ -401,8 +401,8 @@ footer {
     right: -300px;
     width: 300px;
     height: 100vh;
-    background: #fff;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    background: var(--sidebar-bg);
+    box-shadow: 2px 0 5px var(--shadow-color);
     transition: right 0.3s ease;
     z-index: 1000;
     overflow-y: auto;
@@ -690,11 +690,12 @@ main {
 }
 
 .settings-section {
-    background: #fff;
+    background: var(--card-bg);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
 }
 
 .settings-section h2 {
@@ -827,4 +828,153 @@ select:focus {
 
 .menu-link.active .material-icons {
     color: #ff6b6b;
+}
+
+/* Tema değişkenleri */
+:root {
+    /* Açık tema (varsayılan) */
+    --bg-color: #fcf8f3;
+    --text-color: #333;
+    --header-bg: #fff;
+    --sidebar-bg: #fff;
+    --card-bg: #fff;
+    --border-color: #ffe3e3;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --primary-color: #F48FB1;
+    --secondary-color: #fad0c4;
+    --menu-bg: #f8f8f8;
+    --menu-hover: #f0f0f0;
+    --menu-active: #fff5f5;
+    --menu-text: #333;
+    --menu-icon: #F48FB1;
+    --input-border: #ffe3e3;
+    --input-focus: #F48FB1;
+    --button-bg: #ff6b6b;
+    --button-hover: #ff5252;
+    --button-text: white;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #fff;
+    --header-bg: #2d2d2d;
+    --sidebar-bg: #2d2d2d;
+    --card-bg: #2d2d2d;
+    --border-color: #404040;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --primary-color: #ff80ab;
+    --secondary-color: #ffb6c1;
+    --menu-bg: #363636;
+    --menu-hover: #404040;
+    --menu-active: #4a4a4a;
+    --menu-text: #fff;
+    --menu-icon: #ff80ab;
+    --input-border: #404040;
+    --input-focus: #ff80ab;
+    --button-bg: #ff4081;
+    --button-hover: #f50057;
+    --button-text: white;
+}
+
+/* Genel stiller */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+header {
+    background: var(--header-bg);
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.sidebar {
+    background: var(--sidebar-bg);
+    box-shadow: 2px 0 5px var(--shadow-color);
+}
+
+.sidebar-header {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-title {
+    color: var(--text-color);
+}
+
+.sidebar-close {
+    color: var(--text-color);
+}
+
+.menu-section {
+    background: var(--sidebar-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.menu-section h3 {
+    color: var(--text-color);
+}
+
+.menu-link {
+    background: var(--menu-bg);
+    color: var(--menu-text);
+}
+
+.menu-link:hover {
+    background: var(--menu-hover);
+}
+
+.menu-link .material-icons {
+    color: var(--menu-icon);
+}
+
+.menu-link.active {
+    background: var(--menu-active);
+    color: var(--primary-color);
+}
+
+.menu-link.active .material-icons {
+    color: var(--primary-color);
+}
+
+.settings-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.settings-section h2 {
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-group label {
+    color: var(--text-color);
+}
+
+select {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+select:focus {
+    border-color: var(--primary-color);
+}
+
+.save-settings-btn {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+}
+
+.save-settings-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.reset-settings-btn {
+    background-color: var(--menu-bg);
+    color: var(--text-color);
+}
+
+.reset-settings-btn:hover {
+    background-color: var(--menu-hover);
 } 

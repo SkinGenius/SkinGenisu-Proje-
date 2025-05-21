@@ -306,99 +306,133 @@ function logout() {
 
 // Ayarlar sayfası fonksiyonları
 function initializeSettings() {
-    // Ayarları localStorage'dan yükle
+    console.log('Ayarlar başlatılıyor...');
+    
+    const themeSelect = document.getElementById('themeSelect');
+    const fontSizeSelect = document.getElementById('fontSizeSelect');
+    const languageSelect = document.getElementById('languageSelect');
+    const saveButton = document.querySelector('.save-settings-btn');
+    const resetButton = document.querySelector('.reset-settings-btn');
+
+    // LocalStorage kontrolü
+    try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        console.log('LocalStorage çalışıyor');
+    } catch (e) {
+        console.error('LocalStorage hatası:', e);
+        alert('Tarayıcınızda localStorage desteği yok veya devre dışı bırakılmış.');
+        return;
+    }
+
+    // Kayıtlı ayarları yükle
     loadSettings();
 
-    // Event listener'ları ekle
-    document.querySelector('.save-settings-btn')?.addEventListener('click', saveSettings);
-    document.querySelector('.reset-settings-btn')?.addEventListener('click', resetSettings);
+    // Ayarları kaydet
+    if (saveButton) {
+        saveButton.addEventListener('click', function() {
+            console.log('Kaydet butonuna tıklandı');
+            
+            const theme = themeSelect.value;
+            const fontSize = fontSizeSelect.value;
+            const language = languageSelect.value;
 
-    // Tema değişikliği
-    document.getElementById('themeSelect')?.addEventListener('change', function(e) {
-        applyTheme(e.target.value);
-    });
+            console.log('Seçilen tema:', theme);
+            console.log('Seçilen yazı boyutu:', fontSize);
+            console.log('Seçilen dil:', language);
 
-    // Yazı boyutu değişikliği
-    document.getElementById('fontSizeSelect')?.addEventListener('change', function(e) {
-        applyFontSize(e.target.value);
-    });
+            try {
+                // Ayarları LocalStorage'a kaydet
+                localStorage.setItem('theme', theme);
+                localStorage.setItem('fontSize', fontSize);
+                localStorage.setItem('language', language);
+                
+                console.log('Ayarlar kaydedildi');
+                
+                // Tema değişikliğini uygula
+                if (theme === 'dark') {
+                    document.body.style.backgroundColor = '#1a1a1a';
+                    document.body.style.color = '#fff';
+                } else {
+                    document.body.style.backgroundColor = '#fcf8f3';
+                    document.body.style.color = '#333';
+                }
 
-    // Dil değişikliği
-    document.getElementById('languageSelect')?.addEventListener('change', function(e) {
-        applyLanguage(e.target.value);
-    });
+                alert('Ayarlar başarıyla kaydedildi!');
+                
+                // Sayfayı yenile
+                window.location.reload();
+            } catch (e) {
+                console.error('Ayarları kaydetme hatası:', e);
+                alert('Ayarlar kaydedilirken bir hata oluştu!');
+            }
+        });
+    }
+
+    // Ayarları sıfırla
+    if (resetButton) {
+        resetButton.addEventListener('click', function() {
+            console.log('Sıfırla butonuna tıklandı');
+            
+            try {
+                localStorage.removeItem('theme');
+                localStorage.removeItem('fontSize');
+                localStorage.removeItem('language');
+                
+                console.log('Ayarlar sıfırlandı');
+                
+                // Varsayılan temayı uygula
+                document.body.style.backgroundColor = '#fcf8f3';
+                document.body.style.color = '#333';
+                
+                // Select elementlerini sıfırla
+                themeSelect.value = 'light';
+                fontSizeSelect.value = 'medium';
+                languageSelect.value = 'tr';
+                
+                alert('Ayarlar varsayılana sıfırlandı!');
+                
+                // Sayfayı yenile
+                window.location.reload();
+            } catch (e) {
+                console.error('Ayarları sıfırlama hatası:', e);
+                alert('Ayarlar sıfırlanırken bir hata oluştu!');
+            }
+        });
+    }
 }
 
 function loadSettings() {
-    const settings = JSON.parse(localStorage.getItem('settings')) || {
-        emailNotifications: true,
-        analysisNotifications: true,
-        theme: 'light',
-        fontSize: 'medium',
-        dataCollection: true,
-        personalizedSuggestions: true,
-        language: 'tr'
-    };
+    console.log('Ayarlar yükleniyor...');
+    
+    try {
+        // LocalStorage'dan ayarları yükle
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const savedFontSize = localStorage.getItem('fontSize') || 'medium';
+        const savedLanguage = localStorage.getItem('language') || 'tr';
 
-    // Ayarları form elemanlarına uygula
-    document.getElementById('emailNotifications').checked = settings.emailNotifications;
-    document.getElementById('analysisNotifications').checked = settings.analysisNotifications;
-    document.getElementById('themeSelect').value = settings.theme;
-    document.getElementById('fontSizeSelect').value = settings.fontSize;
-    document.getElementById('dataCollection').checked = settings.dataCollection;
-    document.getElementById('personalizedSuggestions').checked = settings.personalizedSuggestions;
-    document.getElementById('languageSelect').value = settings.language;
+        console.log('Kayıtlı tema:', savedTheme);
+        console.log('Kayıtlı yazı boyutu:', savedFontSize);
+        console.log('Kayıtlı dil:', savedLanguage);
 
-    // Ayarları uygula
-    applyTheme(settings.theme);
-    applyFontSize(settings.fontSize);
-    applyLanguage(settings.language);
-}
+        // Select elementlerini güncelle
+        const themeSelect = document.getElementById('themeSelect');
+        const fontSizeSelect = document.getElementById('fontSizeSelect');
+        const languageSelect = document.getElementById('languageSelect');
 
-function saveSettings() {
-    const settings = {
-        emailNotifications: document.getElementById('emailNotifications').checked,
-        analysisNotifications: document.getElementById('analysisNotifications').checked,
-        theme: document.getElementById('themeSelect').value,
-        fontSize: document.getElementById('fontSizeSelect').value,
-        dataCollection: document.getElementById('dataCollection').checked,
-        personalizedSuggestions: document.getElementById('personalizedSuggestions').checked,
-        language: document.getElementById('languageSelect').value
-    };
+        if (themeSelect) themeSelect.value = savedTheme;
+        if (fontSizeSelect) fontSizeSelect.value = savedFontSize;
+        if (languageSelect) languageSelect.value = savedLanguage;
 
-    localStorage.setItem('settings', JSON.stringify(settings));
-    alert('Ayarlar başarıyla kaydedildi!');
-}
-
-function resetSettings() {
-    if (confirm('Tüm ayarlar varsayılan değerlerine sıfırlanacak. Emin misiniz?')) {
-        localStorage.removeItem('settings');
-        loadSettings();
-        alert('Ayarlar varsayılan değerlerine sıfırlandı!');
+        // Tema değişikliğini uygula
+        if (savedTheme === 'dark') {
+            document.body.style.backgroundColor = '#1a1a1a';
+            document.body.style.color = '#fff';
+        } else {
+            document.body.style.backgroundColor = '#fcf8f3';
+            document.body.style.color = '#333';
+        }
+    } catch (e) {
+        console.error('Ayarları yükleme hatası:', e);
     }
-}
-
-function applyTheme(theme) {
-    document.body.className = theme;
-    if (theme === 'dark') {
-        document.body.style.backgroundColor = '#1a1a1a';
-        document.body.style.color = '#fff';
-    } else {
-        document.body.style.backgroundColor = '#fcf8f3';
-        document.body.style.color = '#333';
-    }
-}
-
-function applyFontSize(size) {
-    const sizes = {
-        small: '14px',
-        medium: '16px',
-        large: '18px'
-    };
-    document.body.style.fontSize = sizes[size];
-}
-
-function applyLanguage(lang) {
-    // Dil değişikliği için sayfayı yeniden yükle
-    window.location.href = `${window.location.pathname}?lang=${lang}`;
 }
