@@ -36,7 +36,7 @@
             <!-- Kullanıcı Profil Bölümü -->
             <div id="userProfile" style="display: none;">
                 <div class="profile-section">
-                    <img src="default-avatar.png" alt="Profil" class="profile-image" id="userProfileImage">
+                    <!-- <img src="default-avatar.png" alt="Profil" class="profile-image" id="userProfileImage"> -->
                     <div class="profile-info">
                         <h3 id="userName">Kullanıcı Adı</h3>
                         <p id="userEmail">kullanici@email.com</p>
@@ -61,7 +61,7 @@
             <!-- Giriş Yapmamış Kullanıcılar İçin -->
             <div id="guestProfile">
                 <div class="profile-section">
-                    <img src="default-avatar.png" alt="Misafir" class="profile-image">
+                    <!-- <img src="default-avatar.png" alt="Misafir" class="profile-image"> -->
                     <div class="profile-info">
                         <h3>Misafir Kullanıcı</h3>
                         <p>Giriş yaparak tüm özelliklere erişin</p>
@@ -208,6 +208,7 @@
                                         <option value="combination">Karma</option>
                                         <option value="sensitive">Hassas</option>
                                     </select>
+                                    <input type="hidden" id="skinIssues" value="">
                                 </div>
                                 <div class="property-group">
                                     <label>Cilt Sorunları:</label>
@@ -292,134 +293,6 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fotoğraf yükleme işlevselliği
-            const uploadArea = document.getElementById('uploadArea');
-            const photoUpload = document.getElementById('photoUpload');
-            const previewImage = document.getElementById('previewImage');
-            const uploadPlaceholder = document.querySelector('.upload-placeholder');
-            const uploadActions = document.querySelector('.upload-actions');
-            const retakePhoto = document.getElementById('retakePhoto');
-            const changePhoto = document.getElementById('changePhoto');
-            const analyzeButton = document.getElementById('analyzeButton');
-
-            // Analiz butonunu kontrol et
-            function checkAnalyzeButton() {
-                const hasPhoto = !previewImage.hidden;
-                const hasSkinType = skinTypeInput.value !== '';
-                const hasSkinIssues = skinIssuesInput.value !== '';
-                
-                analyzeButton.disabled = !(hasPhoto && hasSkinType && hasSkinIssues);
-            }
-
-            // Tıklayarak dosya seçme
-            uploadArea.addEventListener('click', () => {
-                photoUpload.click();
-            });
-
-            // Dosya seçildiğinde
-            photoUpload.addEventListener('change', handleFileSelect);
-
-            // Sürükle-bırak işlevselliği
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.classList.remove('dragover');
-            });
-
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    handleFile(files[0]);
-                }
-            });
-
-            // Dosya seçme işleyicisi
-            function handleFileSelect(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    handleFile(file);
-                }
-            }
-
-            // Dosya işleme
-            function handleFile(file) {
-                // Dosya tipi kontrolü
-                if (!file.type.match('image.*')) {
-                    alert('Lütfen geçerli bir resim dosyası seçin (PNG, JPG, JPEG)');
-                    return;
-                }
-
-                // Dosya boyutu kontrolü (5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('Dosya boyutu 5MB\'dan küçük olmalıdır');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImage.src = e.target.result;
-                    previewImage.hidden = false;
-                    uploadPlaceholder.hidden = true;
-                    uploadActions.hidden = false;
-                    checkAnalyzeButton();
-                };
-                reader.readAsDataURL(file);
-            }
-
-            // Yeniden çek butonu
-            retakePhoto.addEventListener('click', () => {
-                photoUpload.value = '';
-                previewImage.hidden = true;
-                uploadPlaceholder.hidden = false;
-                uploadActions.hidden = true;
-                checkAnalyzeButton();
-            });
-
-            // Değiştir butonu
-            changePhoto.addEventListener('click', () => {
-                photoUpload.click();
-            });
-
-            // Cilt tipi seçimi için JavaScript
-            const skinTypeCards = document.querySelectorAll('.skin-type-card');
-            const skinTypeInput = document.getElementById('skinType');
-
-            skinTypeCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // Önceki seçimi kaldır
-                    skinTypeCards.forEach(c => c.classList.remove('selected'));
-                    // Yeni seçimi işaretle
-                    this.classList.add('selected');
-                    // Input değerini güncelle
-                    skinTypeInput.value = this.getAttribute('data-type');
-                    checkAnalyzeButton();
-                });
-            });
-
-            // Cilt sorunları seçimi için JavaScript
-            const skinIssueCards = document.querySelectorAll('.skin-issue-card input[type="checkbox"]');
-            const skinIssuesInput = document.getElementById('skinIssues');
-
-            skinIssueCards.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const selectedIssues = Array.from(skinIssueCards)
-                        .filter(cb => cb.checked)
-                        .map(cb => cb.value);
-                    skinIssuesInput.value = selectedIssues.join(',');
-                    checkAnalyzeButton();
-                });
-            });
-
-            // Başlangıçta analiz butonunu devre dışı bırak
-            analyzeButton.disabled = true;
-        });
-    </script>
+    <script src="analysis.js"></script>
 </body>
 </html> 

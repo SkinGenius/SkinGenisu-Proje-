@@ -278,10 +278,12 @@ function updateSidebarContent() {
         
         // Profil resmini güncelle
         const profileImage = document.getElementById('userProfileImage');
-        if (user.photoURL) {
-            profileImage.src = user.photoURL;
-        } else {
-            profileImage.src = 'default-avatar.png';
+        if (profileImage) {
+            if (user.photoURL) {
+                profileImage.src = user.photoURL;
+            } else {
+                profileImage.src = 'default-avatar.png';
+            }
         }
     } else {
         // Kullanıcı giriş yapmamış

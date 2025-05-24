@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const skinType = document.getElementById('skinType');
     const analyzeButton = document.getElementById('analyzeButton');
     const analysisResults = document.getElementById('analysisResults');
+    const uploadPlaceholder = document.querySelector('.upload-placeholder');
+    const uploadActions = document.querySelector('.upload-actions');
+
+    // API endpoint
+    const API_URL = 'http://localhost:3000/api/analyze-skin';
 
     // Fotoğraf yükleme alanına tıklama olayı
     uploadArea.addEventListener('click', () => {
@@ -20,15 +25,38 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = (e) => {
                 previewImage.src = e.target.result;
                 previewImage.hidden = false;
-                uploadArea.querySelector('.upload-placeholder').style.display = 'none';
+                uploadPlaceholder.style.display = 'none';
+                uploadActions.hidden = false;
                 checkFormValidity();
             };
             reader.readAsDataURL(file);
         }
     });
 
-    // Cilt tipi değişikliği olayı
-    skinType.addEventListener('change', checkFormValidity);
+    // Cilt tipi kartları için tıklama olayı
+    const skinTypeCards = document.querySelectorAll('.skin-type-card');
+    const skinTypeInput = document.getElementById('skinType');
+    skinTypeCards.forEach(card => {
+        card.addEventListener('click', function() {
+            skinTypeCards.forEach(c => c.classList.remove('selected'));
+            this.classList.add('selected');
+            skinTypeInput.value = this.getAttribute('data-type');
+            checkFormValidity();
+        });
+    });
+
+    // Cilt sorunları için checkbox olayı
+    const skinIssueCards = document.querySelectorAll('.skin-issue-card input[type="checkbox"]');
+    const skinIssuesInput = document.getElementById('skinIssues');
+    skinIssueCards.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const selectedIssues = Array.from(skinIssueCards)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            skinIssuesInput.value = selectedIssues.join(',');
+            checkFormValidity();
+        });
+    });
 
     // Form geçerliliğini kontrol et
     function checkFormValidity() {
@@ -47,37 +75,40 @@ document.addEventListener('DOMContentLoaded', function() {
     // Analiz butonuna tıklama olayı
     analyzeButton.addEventListener('click', async () => {
         try {
+            // Butonu devre dışı bırak ve yükleniyor durumuna geç
             analyzeButton.disabled = true;
             analyzeButton.innerHTML = '<span class="material-icons">hourglass_empty</span> Analiz Yapılıyor...';
 
-            // Burada yapay zeka analizi yapılacak
-            // Şimdilik örnek bir gecikme ekleyelim
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Form verilerini hazırla
+            const formData = new FormData();
+            formData.append('image', photoUpload.files[0]);
+            formData.append('skinType', skinType.value);
+            
+            // Seçili cilt sorunlarını al
+            const selectedIssues = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+            formData.append('skinIssues', selectedIssues.join(','));
 
-            // Örnek analiz sonuçları
-            const results = {
-                skinCondition: {
-                    type: skinType.value,
-                    issues: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
-                    hydration: Math.floor(Math.random() * 100),
-                    oiliness: Math.floor(Math.random() * 100),
-                    sensitivity: Math.floor(Math.random() * 100)
-                },
-                recommendations: [
-                    'Günde iki kez yüz temizliği yapın',
-                    'Nemlendirici kullanın',
-                    'Güneş koruyucu kullanın',
-                    'Bol su için',
-                    'Düzenli uyku uyuyun'
-                ]
-            };
+            // API'ye istek gönder
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('API yanıt vermedi');
+            }
+
+            const results = await response.json();
 
             // Sonuçları göster
             displayResults(results);
+
         } catch (error) {
-            console.error('Analiz sırasında bir hata oluştu:', error);
+            console.error('Analiz hatası:', error);
             alert('Analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.');
         } finally {
+            // Butonu normal duruma getir
             analyzeButton.disabled = false;
             analyzeButton.innerHTML = '<span class="material-icons">psychology</span> Analizi Başlat';
         }
@@ -116,4 +147,18 @@ document.addEventListener('DOMContentLoaded', function() {
         analysisResults.hidden = false;
         analysisResults.scrollIntoView({ behavior: 'smooth' });
     }
+
+    // Yeniden çek butonu
+    document.getElementById('retakePhoto').addEventListener('click', () => {
+        photoUpload.value = '';
+        previewImage.hidden = true;
+        uploadPlaceholder.style.display = 'flex';
+        uploadActions.hidden = true;
+        checkFormValidity();
+    });
+
+    // Değiştir butonu
+    document.getElementById('changePhoto').addEventListener('click', () => {
+        photoUpload.click();
+    });
 }); 
