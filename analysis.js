@@ -161,4 +161,34 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('changePhoto').addEventListener('click', () => {
         photoUpload.click();
     });
+
+    // Sürükle-bırak işlevselliği
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                previewImage.hidden = false;
+                uploadPlaceholder.style.display = 'none';
+                uploadActions.hidden = false;
+                checkFormValidity();
+            };
+            reader.readAsDataURL(file);
+            // input'u da güncelle
+            photoUpload.files = files;
+        }
+    });
 }); 
