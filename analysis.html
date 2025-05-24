@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinGenius - Cilt Analizi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="SkinGenius Logo" class="site-logo">
+            <div class="header-categories">
+                <span class="hamburger-menu" id="openSidebar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-close" id="closeSidebar">&times;</span>
+                <span class="sidebar-title">SkinGenius</span>
+            </div>
+
+            <!-- Kullanıcı Profil Bölümü -->
+            <div id="userProfile" style="display: none;">
+                <div class="profile-section">
+                    <img src="default-avatar.png" alt="Profil" class="profile-image" id="userProfileImage">
+                    <div class="profile-info">
+                        <h3 id="userName">Kullanıcı Adı</h3>
+                        <p id="userEmail">kullanici@email.com</p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <a href="profile.html" class="profile-link">
+                        <span class="material-icons">person</span>
+                        Profilim
+                    </a>
+                    <a href="settings.html" class="profile-link">
+                        <span class="material-icons">settings</span>
+                        Ayarlar
+                    </a>
+                    <button onclick="logout()" class="profile-link logout-btn">
+                        <span class="material-icons">logout</span>
+                        Çıkış Yap
+                    </button>
+                </div>
+            </div>
+
+            <!-- Giriş Yapmamış Kullanıcılar İçin -->
+            <div id="guestProfile">
+                <div class="profile-section">
+                    <img src="default-avatar.png" alt="Misafir" class="profile-image">
+                    <div class="profile-info">
+                        <h3>Misafir Kullanıcı</h3>
+                        <p>Giriş yaparak tüm özelliklere erişin</p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <a href="login.html" class="profile-link">
+                        <span class="material-icons">login</span>
+                        Giriş Yap
+                    </a>
+                    <a href="login.html?tab=register" class="profile-link">
+                        <span class="material-icons">person_add</span>
+                        Kayıt Ol
+                    </a>
+                </div>
+            </div>
+
+            <!-- Ana Menü -->
+            <div class="menu-section">
+                <h3>Ana Menü</h3>
+                <a href="index.html" class="menu-link">
+                    <span class="material-icons">home</span>
+                    Ana Sayfa
+                </a>
+                <a href="analysis.html" class="menu-link active">
+                    <span class="material-icons">face</span>
+                    Cilt Analizi
+                </a>
+                <a href="products.html" class="menu-link">
+                    <span class="material-icons">spa</span>
+                    Ürünler
+                </a>
+                <a href="settings.html" class="menu-link">
+                    <span class="material-icons">settings</span>
+                    Ayarlar
+                </a>
+            </div>
+
+            <!-- Destek -->
+            <div class="menu-section">
+                <h3>Destek</h3>
+                <a href="faq.html" class="menu-link">
+                    <span class="material-icons">help</span>
+                    Sık Sorulan Sorular
+                </a>
+                <a href="contact.html" class="menu-link">
+                    <span class="material-icons">contact_support</span>
+                    İletişim
+                </a>
+            </div>
+        </nav>
+
+        <!-- Ana İçerik -->
+        <main class="analysis-page">
+            <a href="index.html" class="back-button">
+                <span class="material-icons">arrow_back</span>
+                Ana Sayfaya Dön
+            </a>
+            <div class="analysis-container">
+                <h1>Cilt Analizi</h1>
+                <p class="analysis-description">
+                    Yapay zeka destekli cilt analizimiz ile cildinizin durumunu öğrenin ve size özel bakım önerileri alın.
+                </p>
+
+                <div class="analysis-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Fotoğraf Yükle</h3>
+                            <p>İyi aydınlatılmış bir ortamda, yüzünüzün net bir fotoğrafını yükleyin.</p>
+                            <div class="upload-area" id="uploadArea">
+                                <input type="file" id="photoUpload" accept="image/*" hidden>
+                                <div class="upload-placeholder">
+                                    <div class="upload-icon">
+                                        <span class="material-icons">add_photo_alternate</span>
+                                    </div>
+                                    <p>Fotoğraf yüklemek için tıklayın veya sürükleyin</p>
+                                    <span class="upload-hint">PNG, JPG veya JPEG (max. 5MB)</span>
+                                </div>
+                                <img id="previewImage" class="preview-image" hidden>
+                                <div class="upload-actions" hidden>
+                                    <button class="upload-action-btn" id="retakePhoto">
+                                        <span class="material-icons">refresh</span>
+                                        Yeniden Çek
+                                    </button>
+                                    <button class="upload-action-btn" id="changePhoto">
+                                        <span class="material-icons">edit</span>
+                                        Değiştir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Cilt Özelliklerini Seç</h3>
+                            <div class="skin-properties">
+                                <div class="property-group">
+                                    <label>Cilt Tipi:</label>
+                                    <div class="skin-type-cards">
+                                        <div class="skin-type-card" data-type="normal">
+                                            <div class="skin-type-icon">
+                                                <span class="material-icons">face</span>
+                                            </div>
+                                            <h4>Normal</h4>
+                                            <p>Dengeli ve sağlıklı</p>
+                                        </div>
+                                        <div class="skin-type-card" data-type="dry">
+                                            <div class="skin-type-icon">
+                                                <span class="material-icons">water_drop</span>
+                                            </div>
+                                            <h4>Kuru</h4>
+                                            <p>Nem ihtiyacı yüksek</p>
+                                        </div>
+                                        <div class="skin-type-card" data-type="oily">
+                                            <div class="skin-type-icon">
+                                                <span class="material-icons">opacity</span>
+                                            </div>
+                                            <h4>Yağlı</h4>
+                                            <p>Fazla sebum üretimi</p>
+                                        </div>
+                                        <div class="skin-type-card" data-type="combination">
+                                            <div class="skin-type-icon">
+                                                <span class="material-icons">blur_on</span>
+                                            </div>
+                                            <h4>Karma</h4>
+                                            <p>Bölgesel farklılıklar</p>
+                                        </div>
+                                        <div class="skin-type-card" data-type="sensitive">
+                                            <div class="skin-type-icon">
+                                                <span class="material-icons">favorite</span>
+                                            </div>
+                                            <h4>Hassas</h4>
+                                            <p>Kolay tahriş olabilir</p>
+                                        </div>
+                                    </div>
+                                    <select id="skinType" hidden>
+                                        <option value="">Seçiniz</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="dry">Kuru</option>
+                                        <option value="oily">Yağlı</option>
+                                        <option value="combination">Karma</option>
+                                        <option value="sensitive">Hassas</option>
+                                    </select>
+                                </div>
+                                <div class="property-group">
+                                    <label>Cilt Sorunları:</label>
+                                    <div class="skin-issues-grid">
+                                        <label class="skin-issue-card">
+                                            <input type="checkbox" value="acne">
+                                            <div class="issue-content">
+                                                <span class="material-icons">flare</span>
+                                                <span>Sivilce</span>
+                                            </div>
+                                        </label>
+                                        <label class="skin-issue-card">
+                                            <input type="checkbox" value="wrinkles">
+                                            <div class="issue-content">
+                                                <span class="material-icons">waves</span>
+                                                <span>Kırışıklık</span>
+                                            </div>
+                                        </label>
+                                        <label class="skin-issue-card">
+                                            <input type="checkbox" value="darkSpots">
+                                            <div class="issue-content">
+                                                <span class="material-icons">brightness_6</span>
+                                                <span>Leke</span>
+                                            </div>
+                                        </label>
+                                        <label class="skin-issue-card">
+                                            <input type="checkbox" value="redness">
+                                            <div class="issue-content">
+                                                <span class="material-icons">whatshot</span>
+                                                <span>Kızarıklık</span>
+                                            </div>
+                                        </label>
+                                        <label class="skin-issue-card">
+                                            <input type="checkbox" value="dryness">
+                                            <div class="issue-content">
+                                                <span class="material-icons">grain</span>
+                                                <span>Kuruluk</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Analiz Et</h3>
+                            <p>Yapay zeka destekli sistemimiz cildinizi analiz edecek ve size özel öneriler sunacak.</p>
+                            <div class="analysis-animation">
+                                <img src="analysis-scan.svg" alt="Cilt Analizi Taraması" class="scan-animation">
+                            </div>
+                            <button id="analyzeButton" class="analyze-button" disabled>
+                                <span class="material-icons">psychology</span>
+                                Analizi Başlat
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analiz Sonuçları -->
+                <div id="analysisResults" class="analysis-results" hidden>
+                    <h2>Analiz Sonuçları</h2>
+                    <div class="results-container">
+                        <div class="skin-condition">
+                            <h3>Cilt Durumu</h3>
+                            <div class="condition-details">
+                                <!-- Analiz sonuçları JavaScript ile doldurulacak -->
+                            </div>
+                        </div>
+                        <div class="recommendations">
+                            <h3>Öneriler</h3>
+                            <div class="recommendation-list">
+                                <!-- Öneriler JavaScript ile doldurulacak -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fotoğraf yükleme işlevselliği
+            const uploadArea = document.getElementById('uploadArea');
+            const photoUpload = document.getElementById('photoUpload');
+            const previewImage = document.getElementById('previewImage');
+            const uploadPlaceholder = document.querySelector('.upload-placeholder');
+            const uploadActions = document.querySelector('.upload-actions');
+            const retakePhoto = document.getElementById('retakePhoto');
+            const changePhoto = document.getElementById('changePhoto');
+            const analyzeButton = document.getElementById('analyzeButton');
+
+            // Analiz butonunu kontrol et
+            function checkAnalyzeButton() {
+                const hasPhoto = !previewImage.hidden;
+                const hasSkinType = skinTypeInput.value !== '';
+                const hasSkinIssues = skinIssuesInput.value !== '';
+                
+                analyzeButton.disabled = !(hasPhoto && hasSkinType && hasSkinIssues);
+            }
+
+            // Tıklayarak dosya seçme
+            uploadArea.addEventListener('click', () => {
+                photoUpload.click();
+            });
+
+            // Dosya seçildiğinde
+            photoUpload.addEventListener('change', handleFileSelect);
+
+            // Sürükle-bırak işlevselliği
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            // Dosya seçme işleyicisi
+            function handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    handleFile(file);
+                }
+            }
+
+            // Dosya işleme
+            function handleFile(file) {
+                // Dosya tipi kontrolü
+                if (!file.type.match('image.*')) {
+                    alert('Lütfen geçerli bir resim dosyası seçin (PNG, JPG, JPEG)');
+                    return;
+                }
+
+                // Dosya boyutu kontrolü (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Dosya boyutu 5MB\'dan küçük olmalıdır');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.hidden = false;
+                    uploadPlaceholder.hidden = true;
+                    uploadActions.hidden = false;
+                    checkAnalyzeButton();
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Yeniden çek butonu
+            retakePhoto.addEventListener('click', () => {
+                photoUpload.value = '';
+                previewImage.hidden = true;
+                uploadPlaceholder.hidden = false;
+                uploadActions.hidden = true;
+                checkAnalyzeButton();
+            });
+
+            // Değiştir butonu
+            changePhoto.addEventListener('click', () => {
+                photoUpload.click();
+            });
+
+            // Cilt tipi seçimi için JavaScript
+            const skinTypeCards = document.querySelectorAll('.skin-type-card');
+            const skinTypeInput = document.getElementById('skinType');
+
+            skinTypeCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Önceki seçimi kaldır
+                    skinTypeCards.forEach(c => c.classList.remove('selected'));
+                    // Yeni seçimi işaretle
+                    this.classList.add('selected');
+                    // Input değerini güncelle
+                    skinTypeInput.value = this.getAttribute('data-type');
+                    checkAnalyzeButton();
+                });
+            });
+
+            // Cilt sorunları seçimi için JavaScript
+            const skinIssueCards = document.querySelectorAll('.skin-issue-card input[type="checkbox"]');
+            const skinIssuesInput = document.getElementById('skinIssues');
+
+            skinIssueCards.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const selectedIssues = Array.from(skinIssueCards)
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.value);
+                    skinIssuesInput.value = selectedIssues.join(',');
+                    checkAnalyzeButton();
+                });
+            });
+
+            // Başlangıçta analiz butonunu devre dışı bırak
+            analyzeButton.disabled = true;
+        });
+    </script>
+</body>
+</html> 
