@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     initializeSettings();
+    updateLogoForTheme(); // Sayfa yüklenince logoyu temaya göre ayarla
 });
 
 // Google ile giriş
@@ -352,15 +353,9 @@ function initializeSettings() {
                 console.log('Ayarlar kaydedildi');
                 
                 // Tema değişikliğini uygula
-                if (theme === 'dark') {
-                    document.body.style.backgroundColor = '#1a1a1a';
-                    document.body.style.color = '#fff';
-                } else {
-                    document.body.style.backgroundColor = '#fcf8f3';
-                    document.body.style.color = '#333';
-                }
+                applyTheme(theme);
 
-                alert('Ayarlar başarıyla kaydedildi!');
+                showNotification('Ayarlar başarıyla kaydedildi!', 'success');
                 
                 // Sayfayı yenile
                 window.location.reload();
@@ -384,15 +379,14 @@ function initializeSettings() {
                 console.log('Ayarlar sıfırlandı');
                 
                 // Varsayılan temayı uygula
-                document.body.style.backgroundColor = '#fcf8f3';
-                document.body.style.color = '#333';
+                applyTheme('light');
                 
                 // Select elementlerini sıfırla
                 themeSelect.value = 'light';
                 fontSizeSelect.value = 'medium';
                 languageSelect.value = 'tr';
                 
-                alert('Ayarlar varsayılana sıfırlandı!');
+                showNotification('Ayarlar varsayılana sıfırlandı!', 'success');
                 
                 // Sayfayı yenile
                 window.location.reload();
@@ -427,14 +421,220 @@ function loadSettings() {
         if (languageSelect) languageSelect.value = savedLanguage;
 
         // Tema değişikliğini uygula
-        if (savedTheme === 'dark') {
-            document.body.style.backgroundColor = '#1a1a1a';
-            document.body.style.color = '#fff';
-        } else {
-            document.body.style.backgroundColor = '#fcf8f3';
-            document.body.style.color = '#333';
-        }
+        applyTheme(savedTheme);
     } catch (e) {
         console.error('Ayarları yükleme hatası:', e);
     }
 }
+
+// Ayarları localStorage'dan yükle ve uygula
+function loadAndApplySettings() {
+    const settings = JSON.parse(localStorage.getItem('skingeniusSettings')) || {
+        emailNotifications: true,
+        analysisNotifications: true,
+        theme: 'light',
+        fontSize: 'medium',
+        dataCollection: true,
+        personalizedSuggestions: true,
+        language: 'tr'
+    };
+
+    // Tema uygula
+    applyTheme(settings.theme);
+    
+    // Yazı boyutunu uygula
+    applyFontSize(settings.fontSize);
+
+    // Dil ayarını uygula
+    applyLanguage(settings.language);
+
+    // Bildirim ayarlarını uygula
+    applyNotificationSettings(settings);
+}
+
+// Tema değiştiğinde logoyu güncelle
+function updateLogoForTheme() {
+    const logoImg = document.querySelector('.site-logo');
+    if (!logoImg) return;
+    const theme = document.documentElement.getAttribute('data-theme');
+    if (theme === 'dark') {
+        logoImg.src = 'logo-dark.png';
+    } else {
+        logoImg.src = 'logo.png';
+    }
+}
+
+// applyTheme fonksiyonunu güncelle
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    updateLogoForTheme();
+    
+    // Tema değişkenlerini güncelle
+    const root = document.documentElement;
+    if (theme === 'dark') {
+        root.style.setProperty('--bg-color', '#1a1a1a');
+        root.style.setProperty('--text-color', '#ffffff');
+        root.style.setProperty('--header-bg', '#2d2d2d');
+        root.style.setProperty('--sidebar-bg', '#2d2d2d');
+        root.style.setProperty('--card-bg', '#2d2d2d');
+        root.style.setProperty('--border-color', '#ff8ba3');
+        root.style.setProperty('--shadow-color', 'rgba(255, 139, 163, 0.2)');
+        root.style.setProperty('--box-bg', '#2d2d2d');
+        root.style.setProperty('--box-text', '#ffffff');
+        root.style.setProperty('--box-border', '#ff8ba3');
+        root.style.setProperty('--box-shadow', 'rgba(255, 139, 163, 0.2)');
+    } else {
+        root.style.setProperty('--bg-color', '#fff9fb');
+        root.style.setProperty('--text-color', '#2d3436');
+        root.style.setProperty('--header-bg', '#ffffff');
+        root.style.setProperty('--sidebar-bg', '#ffffff');
+        root.style.setProperty('--card-bg', '#ffffff');
+        root.style.setProperty('--border-color', '#ffeef2');
+        root.style.setProperty('--shadow-color', 'rgba(255, 182, 193, 0.12)');
+        root.style.setProperty('--box-bg', '#ffffff');
+        root.style.setProperty('--box-text', '#2d3436');
+        root.style.setProperty('--box-border', '#ffeef2');
+        root.style.setProperty('--box-shadow', 'rgba(255, 182, 193, 0.12)');
+    }
+}
+
+// Yazı boyutunu uygula
+function applyFontSize(size) {
+    const root = document.documentElement;
+    switch(size) {
+        case 'small':
+            root.style.fontSize = '14px';
+            break;
+        case 'medium':
+            root.style.fontSize = '16px';
+            break;
+        case 'large':
+            root.style.fontSize = '18px';
+            break;
+    }
+}
+
+// Dil ayarını uygula
+function applyLanguage(language) {
+    // Dil değişikliği için gerekli işlemler
+    document.documentElement.lang = language;
+    
+    // Sayfa içeriğini güncelle
+    updatePageContent(language);
+}
+
+// Sayfa içeriğini güncelle
+function updatePageContent(language) {
+    // Sayfa başlığını güncelle
+    const pageTitle = document.querySelector('title');
+    if (pageTitle) {
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+        switch(currentPage) {
+            case 'index':
+                pageTitle.textContent = language === 'tr' ? 'SkinGenius - Ana Sayfa' : 'SkinGenius - Home';
+                break;
+            case 'analysis':
+                pageTitle.textContent = language === 'tr' ? 'SkinGenius - Cilt Analizi' : 'SkinGenius - Skin Analysis';
+                break;
+            case 'settings':
+                pageTitle.textContent = language === 'tr' ? 'SkinGenius - Ayarlar' : 'SkinGenius - Settings';
+                break;
+            // Diğer sayfalar için de benzer şekilde devam edebilirsiniz
+        }
+    }
+}
+
+// Bildirim ayarlarını uygula
+function applyNotificationSettings(settings) {
+    // E-posta bildirimleri
+    if (!settings.emailNotifications) {
+        // E-posta bildirimlerini devre dışı bırak
+        console.log('E-posta bildirimleri devre dışı');
+    }
+
+    // Analiz bildirimleri
+    if (!settings.analysisNotifications) {
+        // Analiz bildirimlerini devre dışı bırak
+        console.log('Analiz bildirimleri devre dışı');
+    }
+}
+
+// Sidebar işlemleri
+document.addEventListener('DOMContentLoaded', () => {
+    // Ayarları yükle ve uygula
+    loadAndApplySettings();
+
+    // Sidebar açma/kapama
+    const openSidebar = document.getElementById('openSidebar');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    if (openSidebar && closeSidebar && sidebar && sidebarOverlay) {
+        openSidebar.addEventListener('click', () => {
+            sidebar.classList.add('open');
+            sidebarOverlay.style.display = 'block';
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.style.display = 'none';
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.style.display = 'none';
+        });
+    }
+
+    // Kullanıcı durumunu kontrol et
+    checkUserStatus();
+});
+
+// Kullanıcı durumunu kontrol et
+function checkUserStatus() {
+    const userProfile = document.getElementById('userProfile');
+    const guestProfile = document.getElementById('guestProfile');
+
+    if (userProfile && guestProfile) {
+        // Firebase Auth durumunu kontrol et
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // Kullanıcı giriş yapmış
+                userProfile.style.display = 'block';
+                guestProfile.style.display = 'none';
+                
+                // Kullanıcı bilgilerini güncelle
+                document.getElementById('userName').textContent = user.displayName || 'Kullanıcı';
+                document.getElementById('userEmail').textContent = user.email;
+            } else {
+                // Kullanıcı giriş yapmamış
+                userProfile.style.display = 'none';
+                guestProfile.style.display = 'block';
+            }
+        });
+    }
+}
+
+// Modern, temaya uygun, sağ altta kayan bildirim fonksiyonu
+window.showNotification = function(message, type = '') {
+    // Önce eski bildirimi kaldır (çakışma olmasın)
+    const old = document.querySelector('.notification');
+    if (old) old.remove();
+
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    if (type === 'success') notification.classList.add('success');
+    notification.innerHTML = (type === 'success'
+        ? '<span style="font-size:1.5em;margin-right:16px;margin-left:-28px;color:#fff;font-weight:bold;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.10));">&#10004;</span>'
+        : '') + message;
+    document.body.appendChild(notification);
+
+    // Animasyon için opacity'yi tetikle
+    setTimeout(() => notification.style.opacity = '1', 10);
+
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 400);
+    }, 2600);
+};
