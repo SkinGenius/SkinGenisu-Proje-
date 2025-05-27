@@ -1915,4 +1915,39 @@ select:focus {
     background: transparent !important;
     color: #fff !important;
     border-bottom: none !important;
+}
+
+[data-theme="dark"] .hamburger-menu {
+    background: #181818 !important;
+    border: 2px solid #fff !important;
+}
+[data-theme="dark"] .hamburger-menu span {
+    background-color: #fff !important;
+}
+
+[data-theme="dark"] .profile-section,
+[data-theme="dark"] .profile-info,
+[data-theme="dark"] .profile-info h3,
+[data-theme="dark"] .profile-info p {
+    background: transparent !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+[data-theme="dark"] .sidebar-close {
+    background: transparent !important;
+    color: #fff !important;
+}
+
+[data-theme="dark"] .sidebar-title,
+[data-theme="dark"] .sidebar-header {
+    background: transparent !important;
+    color: #fff !important;
+}
+
+[data-theme="dark"] .sidebar,
+[data-theme="dark"] .sidebar-header,
+[data-theme="dark"] .sidebar-title {
+    background: rgba(24, 24, 24, 0.98) !important;
+    color: #fff !important;
 } 
