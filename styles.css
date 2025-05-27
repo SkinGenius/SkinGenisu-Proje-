@@ -1950,4 +1950,9 @@ select:focus {
 [data-theme="dark"] .sidebar-title {
     background: rgba(24, 24, 24, 0.98) !important;
     color: #fff !important;
+}
+
+[data-theme="dark"] .analysis-features li,
+[data-theme="dark"] .analysis-features li span {
+    color: #fff !important;
 } 
