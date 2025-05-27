@@ -902,19 +902,23 @@ body, html {
     color: var(--menu-text) !important;
 }
 [data-theme="dark"] .menu-link, [data-theme="dark"] .profile-link {
-    background: var(--menu-bg) !important;
-    color: var(--menu-text) !important;
+    background: rgba(35, 35, 35, 0.7) !important;
+    color: #fff !important;
+    border-color: #222 !important;
+    backdrop-filter: blur(5px);
 }
 [data-theme="dark"] .menu-link.active, [data-theme="dark"] .profile-link.active {
-    background: var(--menu-active) !important;
-    color: var(--primary-color) !important;
+    background: rgba(51, 51, 51, 0.8) !important;
+    color: #ff8ba3 !important;
 }
 [data-theme="dark"] .menu-link:hover, [data-theme="dark"] .profile-link:hover {
-    background: var(--menu-hover) !important;
-    color: var(--menu-text) !important;
+    background: rgba(51, 51, 51, 0.8) !important;
+    color: #fff !important;
 }
-[data-theme="dark"] .menu-link .material-icons, [data-theme="dark"] .profile-link .material-icons {
-    color: var(--primary-color) !important;
+[data-theme="dark"] .menu-link .material-icons,
+[data-theme="dark"] .profile-link .material-icons,
+[data-theme="dark"] .skin-type-icon {
+    background: transparent !important;
 }
 
 /* Kartlar, kutular, formlar */
@@ -1855,16 +1859,17 @@ select:focus {
 /* Koyu temada sidebar ve içeriği */
 [data-theme="dark"] .sidebar {
     background: #181818 !important;
-    background-color: #181818 !important;
     color: #fff !important;
     border-right: 1px solid #222 !important;
 }
 
 [data-theme="dark"] .sidebar-header,
-[data-theme="dark"] .menu-section {
+[data-theme="dark"] .menu-section,
+[data-theme="dark"] .profile-section,
+[data-theme="dark"] .profile-actions {
     background: #181818 !important;
-    background-color: #181818 !important;
     color: #fff !important;
+    border-color: #222 !important;
 }
 
 [data-theme="dark"] .sidebar-title,
@@ -1872,29 +1877,42 @@ select:focus {
 [data-theme="dark"] .menu-section h3,
 [data-theme="dark"] .menu-link,
 [data-theme="dark"] .menu-link .material-icons,
-[data-theme="dark"] .profile-section,
 [data-theme="dark"] .profile-info h3,
 [data-theme="dark"] .profile-info p,
 [data-theme="dark"] .profile-link,
 [data-theme="dark"] .profile-link .material-icons {
-    background-color: #232323 !important;
     color: #fff !important;
-    border-color: #444 !important;
+}
+
+[data-theme="dark"] .menu-link,
+[data-theme="dark"] .profile-link {
+    background: rgba(35, 35, 35, 0.7) !important;
+    color: #fff !important;
+    border-color: #222 !important;
+    backdrop-filter: blur(5px);
 }
 
 [data-theme="dark"] .menu-link.active,
 [data-theme="dark"] .profile-link.active {
-    background-color: #333 !important;
+    background: rgba(51, 51, 51, 0.8) !important;
     color: #ff8ba3 !important;
 }
 
 [data-theme="dark"] .menu-link:hover,
 [data-theme="dark"] .profile-link:hover {
-    background-color: #333 !important;
+    background: rgba(51, 51, 51, 0.8) !important;
     color: #fff !important;
 }
 
 [data-theme="dark"] .menu-link .material-icons,
-[data-theme="dark"] .profile-link .material-icons {
-    color: #ff8ba3 !important;
+[data-theme="dark"] .profile-link .material-icons,
+[data-theme="dark"] .skin-type-icon {
+    background: transparent !important;
+}
+
+[data-theme="dark"] .menu-section,
+[data-theme="dark"] .menu-section h3 {
+    background: transparent !important;
+    color: #fff !important;
+    border-bottom: none !important;
 } 
