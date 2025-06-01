@@ -91,34 +91,34 @@ function generateRecommendations(analysis, userInput) {
 
     // Nem seviyesine göre öneriler
     if (analysis.hydration < 30) {
-        recommendations.push('Cildiniz oldukça kuru görünüyor. Nemlendirici kullanımını artırmanızı öneririz.');
+        recommendations.push('Cildin biraz kuru görünüyor. Ona iyi bakmak için hyaluronik asit veya gliserin gibi nemlendirici içeren bir serum veya krem kullanmayı düşünebilirsin!');
     } else if (analysis.hydration > 70) {
-        recommendations.push('Cildiniz iyi nemlenmiş durumda. Mevcut nemlendirme rutininizi sürdürebilirsiniz.');
+        recommendations.push('Harika! Cildin yeterince nemli. Bu güzel rutinine devam et. Nemlendirici serum veya kremini düzenli kullanmayı sürdür!');
     }
 
     // Yağ seviyesine göre öneriler
     if (analysis.oiliness > 70) {
-        recommendations.push('Cildiniz yağlı görünüyor. Yağ dengesini sağlayan ürünler kullanmanızı öneririz.');
+        recommendations.push('Cildin biraz yağlı olabilir. Yağ dengeleyici ürünlerle daha rahat hissetmeni sağlayabilirsin. Niasinamid içeren bir tonik veya hafif yapılı su bazlı bir nemlendirici deneyebilirsin.');
     } else if (analysis.oiliness < 30) {
-        recommendations.push('Cildiniz kuru görünüyor. Yağ bazlı nemlendiriciler kullanmanızı öneririz.');
+        recommendations.push('Cildin nemlendirilmeye ihtiyaç duyuyor gibi. Yağ bazlı temizleyiciler ve seramid gibi lipidleri içeren yoğun nemlendiriciler cildine çok iyi gelecektir.');
     }
 
     // Hassasiyet seviyesine göre öneriler
     if (analysis.sensitivity > 70) {
-        recommendations.push('Cildiniz hassas görünüyor. Alkol ve parfüm içermeyen ürünler kullanmanızı öneririz.');
+        recommendations.push('Cildin hassas olabilir, ona nazik davranalım. Parfüm, alkol ve sert kimyasallar içermeyen, yatıştırıcı içeriklere sahip (papatya, aloe vera gibi) ürünleri tercih etmelisin.');
     }
 
     // Tespit edilen sorunlara göre öneriler
     userInput.skinIssues.forEach(issue => {
         switch(issue) {
             case 'acne':
-                recommendations.push('Akne sorununuz için salisilik asit içeren ürünler kullanmanızı öneririz.');
+                recommendations.push('Akne sorunların için salisilik asit (BHA) içeren bir temizleyici veya serum kullanmayı düşünebilirsin. Bu, gözenekleri temizlemeye yardımcı olur.');
                 break;
             case 'wrinkles':
-                recommendations.push('Kırışıklıklar için retinol içeren ürünler kullanmanızı öneririz.');
+                recommendations.push('Kırışıklıkların görünümünü hafifletmek için gece rutinine retinol içeren bir serum veya krem eklemeyi düşünebilirsin. Başlangıçta düşük konsantrasyonla başlamak önemlidir.');
                 break;
             case 'dark_spots':
-                recommendations.push('Lekeler için C vitamini içeren ürünler kullanmanızı öneririz.');
+                recommendations.push('Lekelerin görünümünü aydınlatmak için C vitamini veya niacinamide içeren bir serum kullanabilirsin. Güneş koruyucu kullanmayı da unutma!');
                 break;
         }
     });
