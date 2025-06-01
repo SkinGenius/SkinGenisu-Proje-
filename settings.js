@@ -6,8 +6,7 @@ function loadSettings() {
         theme: 'light',
         fontSize: 'medium',
         dataCollection: true,
-        personalizedSuggestions: true,
-        language: 'tr'
+        personalizedSuggestions: true
     };
 
     // Toggle switch'leri ayarla
@@ -19,7 +18,6 @@ function loadSettings() {
     // Select elementlerini ayarla
     document.getElementById('themeSelect').value = settings.theme;
     document.getElementById('fontSizeSelect').value = settings.fontSize;
-    document.getElementById('languageSelect').value = settings.language;
 
     // Tema ve yazı boyutunu uygula
     applyTheme(settings.theme);
@@ -34,8 +32,7 @@ function saveSettings() {
         theme: document.getElementById('themeSelect').value,
         fontSize: document.getElementById('fontSizeSelect').value,
         dataCollection: document.getElementById('dataCollection').checked,
-        personalizedSuggestions: document.getElementById('personalizedSuggestions').checked,
-        language: document.getElementById('languageSelect').value
+        personalizedSuggestions: document.getElementById('personalizedSuggestions').checked
     };
 
     localStorage.setItem('skingeniusSettings', JSON.stringify(settings));
@@ -53,8 +50,7 @@ function resetSettings() {
         theme: 'light',
         fontSize: 'medium',
         dataCollection: true,
-        personalizedSuggestions: true,
-        language: 'tr'
+        personalizedSuggestions: true
     };
 
     localStorage.setItem('skingeniusSettings', JSON.stringify(defaultSettings));
