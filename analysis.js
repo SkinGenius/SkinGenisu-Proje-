@@ -116,36 +116,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sonuçları görüntüle
     function displayResults(results) {
-        const conditionDetails = document.querySelector('.condition-details');
-        const recommendationList = document.querySelector('.recommendation-list');
+        // Sonuçları URL parametresi olarak hazırla
+        const resultsData = {
+            skinType: results.skinCondition.type,
+            skinIssues: results.skinCondition.issues,
+            moistureLevel: results.skinCondition.hydration,
+            oilLevel: results.skinCondition.oiliness,
+            recommendations: results.recommendations.map(rec => ({
+                type: getRecommendationType(rec),
+                title: getRecommendationTitle(rec),
+                description: rec
+            }))
+        };
 
-        // Cilt durumu detaylarını göster
-        conditionDetails.innerHTML = `
-            <div class="condition-item">
-                <strong>Cilt Tipi:</strong> ${results.skinCondition.type}
-            </div>
-            <div class="condition-item">
-                <strong>Tespit Edilen Sorunlar:</strong> ${results.skinCondition.issues.join(', ')}
-            </div>
-            <div class="condition-item">
-                <strong>Nem Seviyesi:</strong> ${results.skinCondition.hydration}%
-            </div>
-            <div class="condition-item">
-                <strong>Yağ Seviyesi:</strong> ${results.skinCondition.oiliness}%
-            </div>
-            <div class="condition-item">
-                <strong>Hassasiyet Seviyesi:</strong> ${results.skinCondition.sensitivity}%
-            </div>
-        `;
+        // URL'yi oluştur ve yönlendir
+        const resultsUrl = `out.html?results=${encodeURIComponent(JSON.stringify(resultsData))}`;
+        window.location.href = resultsUrl;
+    }
 
-        // Önerileri göster
-        recommendationList.innerHTML = results.recommendations
-            .map(rec => `<div class="recommendation-item">${rec}</div>`)
-            .join('');
+    // Öneri tipini belirle
+    function getRecommendationType(recommendation) {
+        const lowerRec = recommendation.toLowerCase();
+        if (lowerRec.includes('temizleyici') || lowerRec.includes('cleanser')) return 'cleanser';
+        if (lowerRec.includes('nemlendirici') || lowerRec.includes('moisturizer')) return 'moisturizer';
+        if (lowerRec.includes('serum')) return 'serum';
+        if (lowerRec.includes('güneş') || lowerRec.includes('sunscreen')) return 'sunscreen';
+        if (lowerRec.includes('tedavi') || lowerRec.includes('treatment')) return 'treatment';
+        return 'default';
+    }
 
-        // Sonuçları görünür yap
-        analysisResults.hidden = false;
-        analysisResults.scrollIntoView({ behavior: 'smooth' });
+    // Öneri başlığını belirle
+    function getRecommendationTitle(recommendation) {
+        const type = getRecommendationType(recommendation);
+        const titles = {
+            'cleanser': 'Temizleyici Önerisi',
+            'moisturizer': 'Nemlendirici Önerisi',
+            'serum': 'Serum Önerisi',
+            'sunscreen': 'Güneş Koruyucu Önerisi',
+            'treatment': 'Tedavi Önerisi',
+            'default': 'Bakım Önerisi'
+        };
+        return titles[type];
     }
 
     // Yeniden çek butonu
