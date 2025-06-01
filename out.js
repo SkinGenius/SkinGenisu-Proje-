@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Sonuçları görüntüle
 function displayResults(results) {
     // Cilt sağlığı
-    if (results.skinHealth) {
-        const health = results.skinHealth;
+    if (results.skinType) {
+        const health = calculateSkinHealth(results);
         skinHealthLevel.style.width = `${health}%`;
         skinHealthValue.textContent = `${health}%`;
         skinHealthText.textContent = getSkinHealthText(health);
@@ -53,11 +53,6 @@ function displayResults(results) {
         setTimeout(() => {
             skinHealthLevel.style.transition = 'width 1s ease-in-out';
         }, 100);
-    }
-
-    // Cilt tipi
-    if (results.skinType) {
-        skinTypeResult.textContent = results.skinType;
     }
 
     // Cilt sorunları
@@ -126,6 +121,26 @@ function displayResults(results) {
         };
         actionButtons.appendChild(plantsButton);
     }
+}
+
+// Cilt sağlığı hesaplama
+function calculateSkinHealth(results) {
+    let health = 100;
+    
+    // Nem seviyesine göre düşüş
+    if (results.moistureLevel < 30) health -= 20;
+    else if (results.moistureLevel < 50) health -= 10;
+    
+    // Yağ seviyesine göre düşüş
+    if (results.oilLevel > 70) health -= 15;
+    else if (results.oilLevel > 50) health -= 5;
+    
+    // Cilt sorunlarına göre düşüş
+    if (results.skinIssues) {
+        health -= results.skinIssues.length * 10;
+    }
+    
+    return Math.max(0, Math.min(100, health));
 }
 
 // Cilt sağlığı metni
