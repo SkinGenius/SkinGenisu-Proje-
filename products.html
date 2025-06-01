@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinGenius - Önerilen Bitkiler</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="products.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="SkinGenius Logo" class="site-logo">
+            <div class="header-categories">
+                <span class="hamburger-menu" id="openSidebar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-close" id="closeSidebar">&times;</span>
+                <span class="sidebar-title">SkinGenius</span>
+            </div>
+
+            <!-- Kullanıcı Profil Bölümü -->
+            <div id="userProfile" style="display: none;">
+                <div class="profile-section">
+                    <div class="profile-info">
+                        <h3 id="userName">Kullanıcı Adı</h3>
+                        <p id="userEmail">kullanici@email.com</p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <a href="profile.html" class="profile-link">
+                        <span class="material-icons">person</span>
+                        Profilim
+                    </a>
+                    <button onclick="logout()" class="profile-link logout-btn">
+                        <span class="material-icons">logout</span>
+                        Çıkış Yap
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ana Menü -->
+            <div class="menu-section">
+                <h3>Ana Menü</h3>
+                <a href="index.html" class="menu-link">
+                    <span class="material-icons">home</span>
+                    Ana Sayfa
+                </a>
+                <a href="analysis.html" class="menu-link">
+                    <span class="material-icons">face</span>
+                    Cilt Analizi
+                </a>
+                <a href="products.html" class="menu-link active">
+                    <span class="material-icons">spa</span>
+                    Ürünler
+                </a>
+            </div>
+        </nav>
+
+        <!-- Ana İçerik -->
+        <main class="products-page">
+            <div class="products-container">
+                <div class="products-header">
+                    <h1>Size Özel Bitki Önerileri</h1>
+                    <p class="analysis-date">Analiz Tarihi: <span id="analysisDate"></span></p>
+                </div>
+
+                <!-- Filtreler -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Cilt Durumu:</label>
+                        <select id="skinConditionFilter">
+                            <option value="all">Tümü</option>
+                            <option value="dry">Kuru Cilt</option>
+                            <option value="oily">Yağlı Cilt</option>
+                            <option value="combination">Karma Cilt</option>
+                            <option value="sensitive">Hassas Cilt</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Sorun:</label>
+                        <select id="issueFilter">
+                            <option value="all">Tümü</option>
+                            <option value="acne">Sivilce</option>
+                            <option value="wrinkles">Kırışıklık</option>
+                            <option value="darkSpots">Leke</option>
+                            <option value="redness">Kızarıklık</option>
+                            <option value="dryness">Kuruluk</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Bitki Tablosu -->
+                <div class="plants-table-container">
+                    <table class="plants-table">
+                        <thead>
+                            <tr>
+                                <th>Bitki Adı</th>
+                                <th>Faydaları</th>
+                                <th>Kullanım Şekli</th>
+                                <th>Uygun Cilt Tipleri</th>
+                                <th>Etki Seviyesi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plantsTableBody">
+                            <!-- JavaScript ile doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Detaylı Bilgi Kartı -->
+                <div class="plant-detail-card" id="plantDetailCard" style="display: none;">
+                    <div class="plant-detail-header">
+                        <h3 id="plantName">Bitki Adı</h3>
+                        <button class="close-detail" onclick="closePlantDetail()">
+                            <span class="material-icons">close</span>
+                        </button>
+                    </div>
+                    <div class="plant-detail-content">
+                        <div class="plant-image">
+                            <img id="plantImage" src="" alt="Bitki Görseli">
+                        </div>
+                        <div class="plant-info">
+                            <div class="info-section">
+                                <h4>Faydaları</h4>
+                                <p id="plantBenefits"></p>
+                            </div>
+                            <div class="info-section">
+                                <h4>Kullanım Şekli</h4>
+                                <p id="plantUsage"></p>
+                            </div>
+                            <div class="info-section">
+                                <h4>Dikkat Edilmesi Gerekenler</h4>
+                                <p id="plantPrecautions"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="products.js"></script>
+</body>
+</html> 
