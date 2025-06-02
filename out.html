@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkinGenius - Analiz Sonuçları</title>
+    <title>Analiz Sonuçları - SkinGenius</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="out.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -33,35 +33,13 @@
                 <span class="sidebar-close" id="closeSidebar">&times;</span>
                 <span class="sidebar-title">SkinGenius</span>
             </div>
-
-            <!-- Kullanıcı Profil Bölümü -->
-            <div id="userProfile" style="display: none;">
-                <div class="profile-section">
-                    <div class="profile-info">
-                        <h3 id="userName">Kullanıcı Adı</h3>
-                        <p id="userEmail">kullanici@email.com</p>
-                    </div>
-                </div>
-                <div class="profile-actions">
-                    <a href="profile.html" class="profile-link">
-                        <span class="material-icons">person</span>
-                        Profilim
-                    </a>
-                    <button onclick="logout()" class="profile-link logout-btn">
-                        <span class="material-icons">logout</span>
-                        Çıkış Yap
-                    </button>
-                </div>
-            </div>
-
-            <!-- Ana Menü -->
             <div class="menu-section">
                 <h3>Ana Menü</h3>
                 <a href="index.html" class="menu-link">
                     <span class="material-icons">home</span>
                     Ana Sayfa
                 </a>
-                <a href="analysis.html" class="menu-link">
+                <a href="analysis.html" class="menu-link active">
                     <span class="material-icons">face</span>
                     Cilt Analizi
                 </a>
@@ -74,123 +52,228 @@
                     Ayarlar
                 </a>
             </div>
+            <div class="menu-section">
+                <h3>Destek</h3>
+                <a href="faq.html" class="menu-link">
+                    <span class="material-icons">help</span>
+                    Sık Sorulan Sorular
+                </a>
+                <a href="contact.html" class="menu-link">
+                    <span class="material-icons">contact_support</span>
+                    İletişim
+                </a>
+            </div>
         </nav>
 
         <!-- Ana İçerik -->
         <main class="analysis-results">
+            <div class="results-header">
+                <h1>Cilt Analiz Sonuçlarınız</h1>
+                <p class="analysis-date">Analiz Tarihi: <span id="analysisDate"></span></p>
+            </div>
+
             <div class="results-container">
-                <div class="results-header">
-                    <h1>Analiz Sonuçları</h1>
-                    <p class="analysis-date">Analiz Tarihi: <span id="analysisDate"></span></p>
+                <!-- Kullanıcı Fotoğrafı -->
+                <div class="user-photo-section">
+                    <div class="photo-container">
+                        <img id="userPhoto" src="" alt="Kullanıcı Fotoğrafı" class="user-photo">
+                        <div class="photo-overlay">
+                            <span class="material-icons">face</span>
+                            <span>Analiz Edilen Fotoğraf</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="results-grid">
-                    <!-- Cilt Sağlığı -->
-                    <div class="result-card skin-health">
-                        <div class="result-icon">
-                            <span class="material-icons">favorite</span>
+                <!-- Yapay Zeka Önerileri -->
+                <div class="ai-recommendations">
+                    <div class="ai-header">
+                        <span class="material-icons">psychology</span>
+                        <h2>Yapay Zeka Analizi</h2>
+                    </div>
+                    <div class="ai-content">
+                        <div class="ai-section">
+                            <h3>Cilt Analizi Sonuçları</h3>
+                            <p id="aiAnalysis" class="ai-text">
+                                Yapay zeka analizimiz sonucunda cildinizde şu özellikler tespit edildi:
+                            </p>
+                            <ul class="ai-findings" id="aiFindings">
+                                <!-- JavaScript ile doldurulacak -->
+                            </ul>
                         </div>
-                        <h3>Cilt Sağlığı</h3>
-                        <div class="progress-container">
-                            <div class="progress-bar">
-                                <div class="progress" id="skinHealthLevel">
-                                    <div class="level-value" id="skinHealthValue">0%</div>
+                        
+                        <div class="ai-section">
+                            <h3>Detaylı Öneriler</h3>
+                            <div class="ai-suggestions" id="aiSuggestions">
+                                <!-- JavaScript ile doldurulacak -->
+                            </div>
+                        </div>
+
+                        <div class="ai-section">
+                            <h3>Bakım Rutini</h3>
+                            <div class="routine-steps" id="routineSteps">
+                                <!-- JavaScript ile doldurulacak -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analiz Sonuçları -->
+                <div class="results-details">
+                    <div class="skin-condition">
+                        <h2>Cilt Durumu</h2>
+                        <div class="condition-score">
+                            <div class="score-circle">
+                                <span id="skinScore">85</span>
+                                <small>Puan</small>
+                            </div>
+                            <div class="score-description">
+                                <h3 id="skinCondition">Sağlıklı</h3>
+                                <p id="skinDescription">Cildiniz genel olarak sağlıklı görünüyor.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skin-parameters">
+                        <h2>Cilt Parametreleri</h2>
+                        <div class="parameters-grid">
+                            <div class="parameter-card">
+                                <div class="parameter-icon">
+                                    <span class="material-icons">water_drop</span>
+                                </div>
+                                <div class="parameter-info">
+                                    <h3>Nem Seviyesi</h3>
+                                    <div class="parameter-value">
+                                        <div class="progress-bar">
+                                            <div class="progress" id="moistureLevel" style="width: 75%"></div>
+                                        </div>
+                                        <span class="value-text">75%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="level-indicators">
-                                <div class="level-indicator" data-label="Düşük"></div>
-                                <div class="level-indicator" data-label="Orta"></div>
-                                <div class="level-indicator" data-label="İyi"></div>
-                                <div class="level-indicator" data-label="Mükemmel"></div>
-                            </div>
-                        </div>
-                        <p id="skinHealthText">-</p>
-                    </div>
 
-                    <!-- Cilt Sorunları -->
-                    <div class="result-card skin-issues">
-                        <div class="result-icon">
-                            <span class="material-icons">warning</span>
-                        </div>
-                        <h3>Tespit Edilen Sorunlar</h3>
-                        <ul id="skinIssuesList">
-                            <!-- JavaScript ile doldurulacak -->
-                        </ul>
-                    </div>
-
-                    <!-- Nem Seviyesi -->
-                    <div class="result-card moisture">
-                        <div class="result-icon">
-                            <span class="material-icons">water_drop</span>
-                        </div>
-                        <h3>Nem Seviyesi</h3>
-                        <div class="progress-container">
-                            <div class="progress-bar">
-                                <div class="progress" id="moistureLevel">
-                                    <div class="level-value" id="moistureValue">0%</div>
+                            <div class="parameter-card">
+                                <div class="parameter-icon">
+                                    <span class="material-icons">oil_barrel</span>
+                                </div>
+                                <div class="parameter-info">
+                                    <h3>Yağ Seviyesi</h3>
+                                    <div class="parameter-value">
+                                        <div class="progress-bar">
+                                            <div class="progress" id="oilLevel" style="width: 45%"></div>
+                                        </div>
+                                        <span class="value-text">45%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="level-indicators">
-                                <div class="level-indicator" data-label="Çok Kuru"></div>
-                                <div class="level-indicator" data-label="Kuru"></div>
-                                <div class="level-indicator" data-label="Normal"></div>
-                                <div class="level-indicator" data-label="Nemli"></div>
-                            </div>
-                        </div>
-                        <p id="moistureText">-</p>
-                    </div>
 
-                    <!-- Yağ Seviyesi -->
-                    <div class="result-card oil">
-                        <div class="result-icon">
-                            <span class="material-icons">opacity</span>
-                        </div>
-                        <h3>Yağ Seviyesi</h3>
-                        <div class="progress-container">
-                            <div class="progress-bar">
-                                <div class="progress" id="oilLevel">
-                                    <div class="level-value" id="oilValue">0%</div>
+                            <div class="parameter-card">
+                                <div class="parameter-icon">
+                                    <span class="material-icons">brightness_6</span>
+                                </div>
+                                <div class="parameter-info">
+                                    <h3>Pigmentasyon</h3>
+                                    <div class="parameter-value">
+                                        <div class="progress-bar">
+                                            <div class="progress" id="pigmentationLevel" style="width: 30%"></div>
+                                        </div>
+                                        <span class="value-text">30%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="level-indicators">
-                                <div class="level-indicator" data-label="Çok Kuru"></div>
-                                <div class="level-indicator" data-label="Normal"></div>
-                                <div class="level-indicator" data-label="Yağlı"></div>
-                                <div class="level-indicator" data-label="Çok Yağlı"></div>
+
+                            <div class="parameter-card">
+                                <div class="parameter-icon">
+                                    <span class="material-icons">texture</span>
+                                </div>
+                                <div class="parameter-info">
+                                    <h3>Doku</h3>
+                                    <div class="parameter-value">
+                                        <div class="progress-bar">
+                                            <div class="progress" id="textureLevel" style="width: 60%"></div>
+                                        </div>
+                                        <span class="value-text">60%</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <p id="oilText">-</p>
+                    </div>
+
+                    <!-- Öneriler -->
+                    <div class="recommendations">
+                        <h2>Öneriler</h2>
+                        <div class="recommendations-list">
+                            <div class="recommendation-card">
+                                <span class="material-icons">lightbulb</span>
+                                <div class="recommendation-content">
+                                    <h3>Günlük Bakım Rutini</h3>
+                                    <p>Sabah ve akşam düzenli olarak nemlendirici kullanın.</p>
+                                </div>
+                            </div>
+                            <div class="recommendation-card">
+                                <span class="material-icons">spa</span>
+                                <div class="recommendation-content">
+                                    <h3>Ürün Önerileri</h3>
+                                    <p>Hyaluronik asit içeren nemlendiriciler kullanabilirsiniz.</p>
+                                </div>
+                            </div>
+                            <div class="recommendation-card">
+                                <span class="material-icons">schedule</span>
+                                <div class="recommendation-content">
+                                    <h3>Takip</h3>
+                                    <p>Bir sonraki analiz için 2 hafta sonra tekrar gelin.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Öneriler -->
-                <div class="recommendations">
-                    <h2>Size Özel Öneriler</h2>
-                    <div class="recommendations-grid" id="recommendationsList">
-                        <!-- JavaScript ile doldurulacak -->
-                    </div>
-                </div>
-
-                <!-- Aksiyon Butonları -->
-                <div class="action-buttons">
-                    <button class="action-btn primary" onclick="window.location.href='products.html'">
-                        <span class="material-icons">spa</span>
-                        Önerilen Ürünleri Gör
-                    </button>
-                    <button class="action-btn secondary" onclick="window.location.href='analysis.html'">
-                        <span class="material-icons">refresh</span>
-                        Yeni Analiz Yap
-                    </button>
-                    <button class="action-btn" onclick="downloadResults()">
-                        <span class="material-icons">download</span>
-                        Sonuçları İndir
-                    </button>
-                </div>
+            <!-- Aksiyon Butonları -->
+            <div class="action-buttons">
+                <button class="btn-primary" onclick="window.location.href='products.html'">
+                    <span class="material-icons">shopping_bag</span>
+                    Önerilen Ürünleri Gör
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='analysis.html'">
+                    <span class="material-icons">refresh</span>
+                    Yeni Analiz Yap
+                </button>
+                <button class="btn-outline" onclick="downloadResults()">
+                    <span class="material-icons">download</span>
+                    Sonuçları İndir
+                </button>
             </div>
         </main>
     </div>
 
-    <script src="script.js"></script>
     <script src="out.js"></script>
+    <script>
+        // Sidebar işlemleri
+        function initializeSidebar() {
+            const openSidebar = document.getElementById('openSidebar');
+            const closeSidebar = document.getElementById('closeSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (openSidebar && closeSidebar && sidebar && overlay) {
+                openSidebar.addEventListener('click', () => {
+                    sidebar.classList.add('open');
+                    overlay.style.display = 'block';
+                });
+                
+                closeSidebar.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+                
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeSidebar);
+    </script>
 </body>
 </html> 

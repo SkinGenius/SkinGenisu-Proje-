@@ -1,10 +1,17 @@
 // Firebase yapılandırması
 const firebaseConfig = {
-    // Firebase yapılandırma bilgileri buraya gelecek
+    apiKey: "AIzaSyDxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXx",
+    authDomain: "skingenius-xxxxx.firebaseapp.com",
+    projectId: "skingenius-xxxxx",
+    storageBucket: "skingenius-xxxxx.appspot.com",
+    messagingSenderId: "xxxxxxxxxxxx",
+    appId: "1:xxxxxxxxxxxx:web:xxxxxxxxxxxxxxxxxxxx",
+    measurementId: "G-XXXXXXXXXX"
 };
 
 // Firebase başlatma
 firebase.initializeApp(firebaseConfig);
+const analytics = firebase.analytics();
 
 // DOM elementleri
 const skinHealthLevel = document.getElementById('skinHealthLevel');
@@ -20,248 +27,215 @@ const oilText = document.getElementById('oilText');
 const recommendationsList = document.getElementById('recommendationsList');
 const analysisDate = document.getElementById('analysisDate');
 
-// Analiz sonuçlarını yükle
+// Sayfa yüklendiğinde
 document.addEventListener('DOMContentLoaded', () => {
-    // Analiz tarihini ayarla
-    const now = new Date();
-    analysisDate.textContent = now.toLocaleDateString('tr-TR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-
-    // URL'den analiz sonuçlarını al
-    const urlParams = new URLSearchParams(window.location.search);
-    const analysisResults = JSON.parse(decodeURIComponent(urlParams.get('results') || '{}'));
-
-    // Sonuçları göster
-    displayResults(analysisResults);
+    // Tema kontrolü
+    initTheme();
+    
+    // Analiz sonuçlarını yükle
+    loadAnalysisResults();
+    
+    // Görsel büyütme işlevi
+    initImageZoom();
+    
+    // Analitik
+    logPageView();
 });
 
-// Sonuçları görüntüle
-function displayResults(results) {
-    // Cilt sağlığı
-    if (results.skinType) {
-        const health = calculateSkinHealth(results);
-        skinHealthLevel.style.width = `${health}%`;
-        skinHealthValue.textContent = `${health}%`;
-        skinHealthText.textContent = getSkinHealthText(health);
-        
-        // Animasyon efekti
-        setTimeout(() => {
-            skinHealthLevel.style.transition = 'width 1s ease-in-out';
-        }, 100);
+// Tema yönetimi
+function initTheme() {
+    const savedSettings = localStorage.getItem('skingeniusSettings');
+    if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        applyTheme(settings.theme);
+    } else {
+        applyTheme('light');
+    }
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    // Logo güncelleme
+    const logo = document.querySelector('.site-logo');
+    if (logo) {
+        logo.src = theme === 'dark' ? 'logo-dark.png' : 'logo.png';
+    }
+}
+
+// Analiz sonuçlarını yükleme
+function loadAnalysisResults() {
+    // Örnek veri - Gerçek uygulamada API'den gelecek
+    const analysisData = {
+        date: new Date().toLocaleDateString('tr-TR'),
+        userPhoto: 'user-photo.jpg', // Kullanıcının yüklediği fotoğraf
+        aiAnalysis: {
+            findings: [
+                {
+                    icon: 'water_drop',
+                    text: 'Cildinizde orta seviyede nem eksikliği tespit edildi.'
+                },
+                {
+                    icon: 'brightness_6',
+                    text: 'Hafif pigmentasyon sorunları mevcut.'
+                },
+                {
+                    icon: 'texture',
+                    text: 'Cilt dokusunda ince çizgiler görülüyor.'
+                },
+                {
+                    icon: 'opacity',
+                    text: 'T bölgesinde yağlanma eğilimi var.'
+                }
+            ],
+            suggestions: [
+                {
+                    icon: 'spa',
+                    title: 'Nemlendirme',
+                    text: 'Hyaluronik asit içeren nemlendiriciler kullanmanız önerilir.'
+                },
+                {
+                    icon: 'wb_sunny',
+                    title: 'Güneş Koruması',
+                    text: 'Yüksek SPF içeren güneş kremi kullanımı önemli.'
+                },
+                {
+                    icon: 'cleaning_services',
+                    title: 'Temizlik',
+                    text: 'Yağ dengesini koruyan bir temizleyici kullanın.'
+                }
+            ],
+            routine: [
+                {
+                    step: 1,
+                    title: 'Sabah Rutini',
+                    text: 'Temizleyici, tonik, serum ve nemlendirici kullanın.'
+                },
+                {
+                    step: 2,
+                    title: 'Akşam Rutini',
+                    text: 'Çift temizleme, serum ve gece kremi uygulayın.'
+                },
+                {
+                    step: 3,
+                    title: 'Haftalık Bakım',
+                    text: 'Haftada 1-2 kez peeling ve maske uygulayın.'
+                }
+            ]
+        }
+    };
+
+    // Tarih güncelleme
+    document.getElementById('analysisDate').textContent = analysisData.date;
+
+    // Kullanıcı fotoğrafını güncelleme
+    const userPhoto = document.getElementById('userPhoto');
+    if (userPhoto) {
+        userPhoto.src = analysisData.userPhoto;
     }
 
-    // Cilt sorunları
-    if (results.skinIssues && results.skinIssues.length > 0) {
-        skinIssuesList.innerHTML = results.skinIssues.map(issue => `
+    // AI Analiz sonuçlarını güncelleme
+    updateAIFindings(analysisData.aiAnalysis.findings);
+    updateAISuggestions(analysisData.aiAnalysis.suggestions);
+    updateAIRoutine(analysisData.aiAnalysis.routine);
+}
+
+// AI Bulgularını güncelleme
+function updateAIFindings(findings) {
+    const findingsList = document.getElementById('aiFindings');
+    if (findingsList) {
+        findingsList.innerHTML = findings.map(finding => `
             <li>
-                <span class="material-icons">warning</span>
-                ${issue}
+                <span class="material-icons">${finding.icon}</span>
+                <span>${finding.text}</span>
             </li>
         `).join('');
-    } else {
-        skinIssuesList.innerHTML = '<li>Önemli bir sorun tespit edilmedi</li>';
     }
+}
 
-    // Nem seviyesi
-    if (results.moistureLevel) {
-        const moisture = results.moistureLevel;
-        moistureLevel.style.width = `${moisture}%`;
-        moistureValue.textContent = `${moisture}%`;
-        moistureText.textContent = getMoistureText(moisture);
-        
-        // Animasyon efekti
-        setTimeout(() => {
-            moistureLevel.style.transition = 'width 1s ease-in-out';
-        }, 100);
+// AI Önerilerini güncelleme
+function updateAISuggestions(suggestions) {
+    const suggestionsContainer = document.getElementById('aiSuggestions');
+    if (suggestionsContainer) {
+        suggestionsContainer.innerHTML = suggestions.map(suggestion => `
+            <div class="suggestion-card">
+                <h4>
+                    <span class="material-icons">${suggestion.icon}</span>
+                    ${suggestion.title}
+                </h4>
+                <p>${suggestion.text}</p>
+            </div>
+        `).join('');
     }
+}
 
-    // Yağ seviyesi
-    if (results.oilLevel) {
-        const oil = results.oilLevel;
-        oilLevel.style.width = `${oil}%`;
-        oilValue.textContent = `${oil}%`;
-        oilText.textContent = getOilText(oil);
-        
-        // Animasyon efekti
-        setTimeout(() => {
-            oilLevel.style.transition = 'width 1s ease-in-out';
-        }, 100);
-    }
-
-    // Öneriler
-    if (results.recommendations && results.recommendations.length > 0) {
-        recommendationsList.innerHTML = results.recommendations.map(rec => `
-            <div class="recommendation-card">
-                <span class="material-icons recommendation-icon">${getRecommendationIcon(rec.type)}</span>
-                <div class="recommendation-content">
-                    <h4>${rec.title}</h4>
-                    <p>${rec.description}</p>
+// AI Bakım rutinini güncelleme
+function updateAIRoutine(routine) {
+    const routineContainer = document.getElementById('routineSteps');
+    if (routineContainer) {
+        routineContainer.innerHTML = routine.map(step => `
+            <div class="routine-step">
+                <div class="step-number">${step.step}</div>
+                <div class="step-content">
+                    <h4>${step.title}</h4>
+                    <p>${step.text}</p>
                 </div>
             </div>
         `).join('');
     }
+}
 
-    // Önerilen bitkiler butonunu ekle
-    const actionButtons = document.querySelector('.action-buttons');
-    if (actionButtons) {
-        const plantsButton = document.createElement('button');
-        plantsButton.className = 'action-btn primary';
-        plantsButton.innerHTML = `
-            <span class="material-icons">spa</span>
-            Önerilen Bitkileri Gör
-        `;
-        plantsButton.onclick = () => {
-            const resultsParam = encodeURIComponent(JSON.stringify(results));
-            window.location.href = `products.html?results=${resultsParam}`;
-        };
-        actionButtons.appendChild(plantsButton);
+// Görsel büyütme işlevi
+function initImageZoom() {
+    const imageContainer = document.querySelector('.image-container');
+    if (imageContainer) {
+        imageContainer.addEventListener('click', () => {
+            const image = imageContainer.querySelector('img');
+            if (image) {
+                const modal = document.createElement('div');
+                modal.className = 'image-modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <span class="modal-close">&times;</span>
+                        <img src="${image.src}" alt="Büyük Görsel">
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                // Modal kapatma
+                const closeBtn = modal.querySelector('.modal-close');
+                closeBtn.onclick = () => modal.remove();
+                modal.onclick = (e) => {
+                    if (e.target === modal) modal.remove();
+                };
+            }
+        });
     }
 }
 
-// Cilt sağlığı hesaplama
-function calculateSkinHealth(results) {
-    let health = 100;
-    
-    // Nem seviyesine göre düşüş
-    if (results.moistureLevel < 30) health -= 20;
-    else if (results.moistureLevel < 50) health -= 10;
-    
-    // Yağ seviyesine göre düşüş
-    if (results.oilLevel > 70) health -= 15;
-    else if (results.oilLevel > 50) health -= 5;
-    
-    // Cilt sorunlarına göre düşüş
-    if (results.skinIssues) {
-        health -= results.skinIssues.length * 10;
-    }
-    
-    return Math.max(0, Math.min(100, health));
-}
-
-// Cilt sağlığı metni
-function getSkinHealthText(level) {
-    if (level < 30) return 'Cildiniz bakıma ihtiyaç duyuyor. Düzenli bakım rutini oluşturmanız önerilir.';
-    if (level < 50) return 'Cildiniz orta seviyede sağlıklı. Bazı iyileştirmeler yapılabilir.';
-    if (level < 80) return 'Cildiniz sağlıklı durumda. Mevcut bakım rutininizi sürdürün.';
-    return 'Cildiniz mükemmel durumda! Mevcut bakım rutininiz çok etkili.';
-}
-
-// Nem seviyesi metni
-function getMoistureText(level) {
-    if (level < 30) return 'Çok Kuru';
-    if (level < 50) return 'Kuru';
-    if (level < 70) return 'Normal';
-    return 'Nemli';
-}
-
-// Yağ seviyesi metni
-function getOilText(level) {
-    if (level < 30) return 'Çok Kuru';
-    if (level < 50) return 'Normal';
-    if (level < 70) return 'Yağlı';
-    return 'Çok Yağlı';
-}
-
-// Öneri ikonu
-function getRecommendationIcon(type) {
-    const icons = {
-        'cleanser': 'cleaning_services',
-        'moisturizer': 'water_drop',
-        'serum': 'science',
-        'sunscreen': 'wb_sunny',
-        'treatment': 'healing',
-        'default': 'spa'
-    };
-    return icons[type] || icons.default;
-}
-
-// Sonuçları indir
+// Sonuçları indirme
 function downloadResults() {
-    // Tüm sonuçları topla
-    const results = {
-        analizTarihi: analysisDate.textContent,
-        ciltSağlığı: {
-            seviye: parseInt(skinHealthLevel.style.width),
-            durum: skinHealthText.textContent
-        },
-        nemSeviyesi: {
-            seviye: parseInt(moistureLevel.style.width),
-            durum: moistureText.textContent
-        },
-        yağSeviyesi: {
-            seviye: parseInt(oilLevel.style.width),
-            durum: oilText.textContent
-        },
-        ciltSorunları: Array.from(skinIssuesList.children).map(li => li.textContent.trim()),
-        öneriler: Array.from(recommendationsList.children).map(card => ({
-            başlık: card.querySelector('h4').textContent,
-            açıklama: card.querySelector('p').textContent
-        }))
-    };
+    // PDF oluşturma ve indirme işlemi
+    alert('Sonuçlar indiriliyor...');
+    // Gerçek uygulamada PDF oluşturma ve indirme işlemi yapılacak
+}
 
-    // JSON formatında düzenle
-    const jsonContent = JSON.stringify(results, null, 2);
-
-    // Dosya adını oluştur
-    const date = new Date();
-    const fileName = `skingenius-analiz-${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}.json`;
-
-    // Blob oluştur
-    const blob = new Blob([jsonContent], { 
-        type: 'application/json;charset=utf-8' 
+// Analitik
+function logPageView() {
+    analytics.logEvent('page_view', {
+        page_title: 'Analiz Sonuçları',
+        page_location: window.location.href,
+        page_path: window.location.pathname
     });
-
-    // İndirme bağlantısı oluştur
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    
-    // İndirmeyi başlat
-    document.body.appendChild(a);
-    a.click();
-    
-    // Temizlik
-    setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }, 100);
-
-    // Kullanıcıya bildirim göster
-    showNotification('Sonuçlar başarıyla indirildi!');
 }
 
-// Bildirim gösterme fonksiyonu
-function showNotification(message) {
-    // Bildirim elementi oluştur
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.innerHTML = `
-        <span class="material-icons">check_circle</span>
-        <span>${message}</span>
-    `;
-
-    // Sayfaya ekle
-    document.body.appendChild(notification);
-
-    // Animasyon için timeout
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
-
-    // Bildirimi kaldır
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 3000);
-}
+// Storage event listener for theme changes
+window.addEventListener('storage', (e) => {
+    if (e.key === 'skingeniusSettings') {
+        const settings = JSON.parse(e.newValue);
+        applyTheme(settings.theme);
+    }
+});
 
 // Sidebar işlemleri
 document.getElementById('openSidebar').addEventListener('click', () => {
