@@ -12,6 +12,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+    <script>
+        // Sayfa yüklendiğinde temayı ayarla
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('skinGeniusTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -22,7 +29,7 @@
                     <span></span>
                     <span></span>
                     <span></span>
-                </span
+                </span>
             </div>
         </header>
 
@@ -67,51 +74,75 @@
 
         <!-- Ana içerik -->
         <main class="contact-main-content">
-            <div class="contact-form-wrapper">
-                <form id="contactForm" class="contact-form">
+            <div class="contact-page">
+                <div class="contact-info">
+                    <h1>Bizimle İletişime Geçin</h1>
+                    <p class="contact-description">
+                        Sorularınız, önerileriniz veya geri bildirimleriniz için bizimle iletişime geçebilirsiniz. 
+                        En kısa sürede size dönüş yapacağız.
+                    </p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="material-icons">location_on</i>
+                            <div>
+                                <h3>Adres</h3>
+                                <p>Elazığ, Türkiye</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="material-icons">email</i>
+                            <div>
+                                <h3>E-posta</h3>
+                                <p>skingenius@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
                     <div class="form-header">
                         <h2>İletişim Formu</h2>
-                        <p>Tüm alanları doldurarak bize ulaşın</p>
+                        <p>Size yardımcı olmak için buradayız</p>
                     </div>
-                    <div class="form-group">
-                        <label for="name">Ad Soyad</label>
-                        <div class="input-icon-group">
-                            <span class="material-icons">person</span>
-                            <input type="text" id="name" name="name" required placeholder="Adınız ve soyadınız">
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Adınız Soyadınız</label>
+                            <div class="input-icon-group">
+                                <i class="material-icons">person</i>
+                                <input type="text" id="name" name="name" placeholder="Adınızı ve soyadınızı girin" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-posta</label>
-                        <div class="input-icon-group">
-                            <span class="material-icons">email</span>
-                            <input type="email" id="email" name="email" required placeholder="ornek@email.com">
+                        <div class="form-group">
+                            <label for="email">E-posta Adresiniz</label>
+                            <div class="input-icon-group">
+                                <i class="material-icons">email</i>
+                                <input type="email" id="email" name="email" placeholder="E-posta adresinizi girin" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Konu</label>
-                        <div class="input-icon-group">
-                            <span class="material-icons">label</span>
-                            <input type="text" id="subject" name="subject" required placeholder="Mesajınızın konusu">
+                        <div class="form-group">
+                            <label for="subject">Konu</label>
+                            <div class="input-icon-group">
+                                <i class="material-icons">subject</i>
+                                <input type="text" id="subject" name="subject" placeholder="Mesajınızın konusunu girin" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Mesajınız</label>
-                        <div class="input-icon-group">
-                            <span class="material-icons">comment</span>
-                            <textarea id="message" name="message" rows="6" required placeholder="Mesajınızı buraya yazın..."></textarea>
+                        <div class="form-group">
+                            <label for="message">Mesajınız</label>
+                            <div class="input-icon-group">
+                                <i class="material-icons">message</i>
+                                <textarea id="message" name="message" rows="5" placeholder="Mesajınızı buraya yazın" required></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" class="submit-btn">
-                        <span class="material-icons">send</span>
-                        Gönder
-                    </button>
-                </form>
+                        <button type="submit" class="submit-btn">Gönder</button>
+                    </form>
+                </div>
             </div>
         </main>
     </div>
+
     <script src="contact.js"></script>
     <script>
-        // Sidebar işlemleri (diğer sayfalardakiyle aynı)
+        // Sidebar işlemleri
         function initializeSidebar() {
             const openSidebar = document.getElementById('openSidebar');
             const closeSidebar = document.getElementById('closeSidebar');
@@ -134,14 +165,13 @@
         }
         document.addEventListener('DOMContentLoaded', initializeSidebar);
     </script>
+
     <!-- Footer Başlangıcı -->
     <footer class="footer-contact">
         <div class="footer-contact-content">
-            <div class="footer-contact-title">SkinGenius</div>
+            <h3 class="footer-contact-title">SkinGenius</h3>
             <div class="footer-contact-info">
-                <span><b>E-posta:</b> skingenius@gmail.com</span>
-                <span><b>Proje Sahibi:</b> SkinGenius Ekibi</span>
-                <span>Cilt sağlığınız için yanınızdayız.</span>
+                <span>© 2024 SkinGenius. Tüm hakları saklıdır.</span>
             </div>
         </div>
     </footer>

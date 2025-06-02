@@ -7,8 +7,33 @@
     padding: 0 2rem;
 }
 
+/* Dark theme variables */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7fafd;
+    --text-primary: #333333;
+    --text-secondary: #888888;
+    --border-color: #e0e6ed;
+    --input-bg: #f7fafd;
+    --shadow-color: rgba(74, 144, 226, 0.10);
+    --gradient-start: #4a90e2;
+    --gradient-end: #357abd;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --border-color: #404040;
+    --input-bg: #2d2d2d;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --gradient-start: #357abd;
+    --gradient-end: #2c5282;
+}
+
 .contact-info {
-    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
     padding: 3rem;
     border-radius: 20px;
     color: white;
@@ -63,9 +88,9 @@
 }
 
 .contact-form-wrapper {
-    background: #fff;
+    background: var(--bg-primary);
     border-radius: 18px;
-    box-shadow: 0 8px 32px rgba(74, 144, 226, 0.10);
+    box-shadow: 0 8px 32px var(--shadow-color);
     padding: 2.5rem 2rem 2rem 2rem;
     max-width: 420px;
     width: 100%;
@@ -83,13 +108,13 @@
 
 .form-header h2 {
     font-size: 2rem;
-    color: #4a90e2;
+    color: var(--gradient-start);
     font-weight: 700;
     margin-bottom: 0.3rem;
 }
 
 .form-header p {
-    color: #888;
+    color: var(--text-secondary);
     font-size: 1rem;
     margin: 0;
 }
@@ -109,7 +134,7 @@
 
 .form-group label {
     font-weight: 500;
-    color: #333;
+    color: var(--text-primary);
     font-size: 1rem;
     margin-bottom: 0.2rem;
     letter-spacing: 0.01em;
@@ -118,30 +143,31 @@
 .form-group input,
 .form-group textarea {
     padding: 0.9rem 1rem;
-    border: 1.5px solid #e0e6ed;
+    border: 1.5px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
-    background: #f7fafd;
+    background: var(--input-bg);
+    color: var(--text-primary);
     transition: border-color 0.2s, box-shadow 0.2s;
     resize: none;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #4a90e2;
-    background: #fff;
+    border-color: var(--gradient-start);
+    background: var(--bg-primary);
     outline: none;
-    box-shadow: 0 0 0 2px #e3f0fc;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: #b0b8c1;
+    color: var(--text-secondary);
     font-size: 0.98em;
 }
 
 .submit-btn {
-    background: linear-gradient(90deg, #4a90e2 0%, #357abd 100%);
+    background: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
     color: #fff;
     padding: 0.95rem 0;
     border: none;
@@ -151,7 +177,7 @@
     cursor: pointer;
     margin-top: 0.5rem;
     transition: background 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.08);
+    box-shadow: 0 2px 8px var(--shadow-color);
     width: 100%;
     letter-spacing: 0.03em;
 }
@@ -231,8 +257,8 @@
 /* NAVBAR TASARIMI */
 .navbar {
     width: 100%;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.07);
+    background: var(--bg-primary);
+    box-shadow: 0 2px 8px var(--shadow-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -261,7 +287,7 @@
 
 .nav-links a {
     text-decoration: none;
-    color: #4a3b53;
+    color: var(--text-primary);
     font-weight: 500;
     font-size: 1.1rem;
     letter-spacing: 0.5px;
@@ -272,8 +298,8 @@
 
 .nav-links a.active,
 .nav-links a:hover {
-    background: #f3f6fa;
-    color: #4a90e2;
+    background: var(--bg-secondary);
+    color: var(--gradient-start);
 }
 
 @media (max-width: 768px) {
@@ -304,7 +330,7 @@
 .input-icon-group .material-icons {
     position: absolute;
     left: 1rem;
-    color: #b0b8c1;
+    color: var(--text-secondary);
     font-size: 1.3em;
     pointer-events: none;
     z-index: 2;
@@ -322,8 +348,8 @@
 
 .footer-contact {
     width: 100%;
-    background: #f7fafd;
-    border-top: 1.5px solid #e0e6ed;
+    background: var(--bg-secondary);
+    border-top: 1.5px solid var(--border-color);
     padding: 1.5rem 0 1.2rem 0;
     margin-top: 2rem;
     display: flex;
@@ -341,7 +367,7 @@
 .footer-contact-title {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #4a90e2;
+    color: var(--gradient-start);
     letter-spacing: 0.03em;
 }
 
@@ -350,7 +376,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.2rem;
-    color: #444;
+    color: var(--text-primary);
     font-size: 1rem;
 }
 
@@ -365,4 +391,46 @@
     .footer-contact-title {
         font-size: 1.05rem;
     }
+}
+
+/* Theme Toggle Button Styles */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    transition: background-color 0.3s;
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-secondary);
+}
+
+.theme-toggle .material-icons {
+    font-size: 1.5rem;
+}
+
+/* Show/hide theme icons based on current theme */
+[data-theme="light"] .dark-icon,
+[data-theme="dark"] .light-icon {
+    display: none;
+}
+
+[data-theme="light"] .light-icon,
+[data-theme="dark"] .dark-icon {
+    display: block;
+}
+
+/* Dark theme specific adjustments */
+[data-theme="dark"] .theme-toggle {
+    color: #fff;
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 } 
