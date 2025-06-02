@@ -75,6 +75,16 @@ app.post('/api/analyze-skin', upload.single('image'), async (req, res) => {
             confidence: 0.85
         };
 
+        // Eğer cilt tipi kuru ise nem seviyesini düşük ayarla
+        if (userInput.skinType === 'dry') {
+            analysis.hydration = Math.floor(Math.random() * 30); // 0-29 arası bir değer
+        }
+        
+        // Eğer cilt tipi yağlı ise yağ seviyesini yüksek ayarla
+         if (userInput.skinType === 'oily') {
+            analysis.oiliness = Math.floor(Math.random() * 40) + 60; // 60-99 arası bir değer
+        }
+
         // Önerileri oluştur
         const recommendations = generateRecommendations(analysis, userInput);
 
@@ -159,6 +169,12 @@ function generateRecommendations(analysis, userInput) {
                 break;
             case 'dark_spots':
                 recommendations.push('Lekelerin görünümünü aydınlatmak için C vitamini veya niacinamide içeren bir serum kullanabilirsin. Güneş koruyucu kullanmayı da unutma!');
+                break;
+             case 'redness':
+                recommendations.push('Kızarıklık sorununuz için yatıştırıcı ve sakinleştirici ürünler kullanmanızı öneririz.');
+                break;
+            case 'dryness':
+                recommendations.push('Yoğun nemlendirici ve besleyici ürünler kullanmak kuruluğu azaltmaya yardımcı olacaktır.');
                 break;
         }
     });

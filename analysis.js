@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sonuçları görüntüle
     function displayResults(results) {
-        // Sonuçları URL parametresi olarak hazırla
+        // Sonuçları hazırla
         const resultsData = {
             skinType: results.skinCondition.type,
             skinIssues: results.skinCondition.issues,
@@ -129,9 +129,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }))
         };
 
-        // URL'yi oluştur ve yönlendir
-        const resultsUrl = `out.html?results=${encodeURIComponent(JSON.stringify(resultsData))}`;
-        window.location.href = resultsUrl;
+        // Sonuçları göster
+        const resultsContainer = document.getElementById('analysisResults');
+        const recommendationList = resultsContainer.querySelector('.recommendation-list');
+
+        // Önerileri recommendation-list'e ekle
+        recommendationList.innerHTML = resultsData.recommendations.map(rec => `
+            <li>
+                <h4>${rec.title}</h4>
+                <p>${rec.description}</p>
+            </li>
+        `).join('');
+
+        // Sonuçlar bölümünü görünür yap
+        resultsContainer.style.display = 'block';
+
+        // Animasyonlu görünüm için
+        setTimeout(() => {
+            resultsContainer.style.opacity = '1';
+            resultsContainer.style.transform = 'translateY(0)';
+        }, 100);
     }
 
     // Öneri tipini belirle
