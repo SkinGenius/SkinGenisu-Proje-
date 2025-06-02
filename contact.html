@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - SkinGenius</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="SkinGenius Logo" class="site-logo">
+            <div class="header-categories">
+                <span class="hamburger-menu" id="openSidebar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-close" id="closeSidebar">&times;</span>
+                <span class="sidebar-title">SkinGenius</span>
+            </div>
+            <div class="menu-section">
+                <h3>Ana Menü</h3>
+                <a href="index.html" class="menu-link">
+                    <span class="material-icons">home</span>
+                    Ana Sayfa
+                </a>
+                <a href="analysis.html" class="menu-link">
+                    <span class="material-icons">face</span>
+                    Cilt Analizi
+                </a>
+                <a href="products.html" class="menu-link">
+                    <span class="material-icons">spa</span>
+                    Ürünler
+                </a>
+                <a href="settings.html" class="menu-link">
+                    <span class="material-icons">settings</span>
+                    Ayarlar
+                </a>
+            </div>
+            <div class="menu-section">
+                <h3>Destek</h3>
+                <a href="faq.html" class="menu-link">
+                    <span class="material-icons">help</span>
+                    Sık Sorulan Sorular
+                </a>
+                <a href="contact.html" class="menu-link active">
+                    <span class="material-icons">contact_support</span>
+                    İletişim
+                </a>
+            </div>
+        </nav>
+
+        <!-- Ana içerik -->
+        <main class="contact-main-content">
+            <div class="contact-form-wrapper">
+                <form id="contactForm" class="contact-form">
+                    <div class="form-header">
+                        <h2>İletişim Formu</h2>
+                        <p>Tüm alanları doldurarak bize ulaşın</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Ad Soyad</label>
+                        <div class="input-icon-group">
+                            <span class="material-icons">person</span>
+                            <input type="text" id="name" name="name" required placeholder="Adınız ve soyadınız">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-posta</label>
+                        <div class="input-icon-group">
+                            <span class="material-icons">email</span>
+                            <input type="email" id="email" name="email" required placeholder="ornek@email.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Konu</label>
+                        <div class="input-icon-group">
+                            <span class="material-icons">label</span>
+                            <input type="text" id="subject" name="subject" required placeholder="Mesajınızın konusu">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mesajınız</label>
+                        <div class="input-icon-group">
+                            <span class="material-icons">comment</span>
+                            <textarea id="message" name="message" rows="6" required placeholder="Mesajınızı buraya yazın..."></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <span class="material-icons">send</span>
+                        Gönder
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="contact.js"></script>
+    <script>
+        // Sidebar işlemleri (diğer sayfalardakiyle aynı)
+        function initializeSidebar() {
+            const openSidebar = document.getElementById('openSidebar');
+            const closeSidebar = document.getElementById('closeSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (openSidebar && closeSidebar && sidebar && overlay) {
+                openSidebar.addEventListener('click', () => {
+                    sidebar.classList.add('open');
+                    overlay.style.display = 'block';
+                });
+                closeSidebar.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initializeSidebar);
+    </script>
+    <!-- Footer Başlangıcı -->
+    <footer class="footer-contact">
+        <div class="footer-contact-content">
+            <div class="footer-contact-title">SkinGenius</div>
+            <div class="footer-contact-info">
+                <span><b>E-posta:</b> skingenius@gmail.com</span>
+                <span><b>Proje Sahibi:</b> SkinGenius Ekibi</span>
+                <span>Cilt sağlığınız için yanınızdayız.</span>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Sonu -->
+</body>
+</html> 

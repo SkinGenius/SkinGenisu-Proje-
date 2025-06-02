@@ -1,9 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// E-posta gönderici yapılandırması
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'skingenius@gmail.com',
+        pass: process.env.EMAIL_PASSWORD // Gmail uygulama şifresi kullanılmalı
+    }
+});
 
 // CORS ayarları
 app.use(cors({
@@ -15,7 +25,7 @@ app.use(cors({
 
 // Middleware
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('.'));
 
 // Hata ayıklama middleware'i
 app.use((req, res, next) => {
@@ -82,6 +92,36 @@ app.post('/api/analyze-skin', upload.single('image'), async (req, res) => {
     } catch (error) {
         console.error('Analiz hatası:', error);
         res.status(500).json({ error: 'Cilt analizi sırasında bir hata oluştu' });
+    }
+});
+
+// İletişim formu endpoint'i
+app.post('/api/contact', async (req, res) => {
+    try {
+        const { name, email, subject, message } = req.body;
+
+        // E-posta içeriği
+        const mailOptions = {
+            from: 'skingenius@gmail.com',
+            to: 'skingenius@gmail.com',
+            subject: `İletişim Formu: ${subject}`,
+            html: `
+                <h2>Yeni İletişim Formu Mesajı</h2>
+                <p><strong>Gönderen:</strong> ${name}</p>
+                <p><strong>E-posta:</strong> ${email}</p>
+                <p><strong>Konu:</strong> ${subject}</p>
+                <p><strong>Mesaj:</strong></p>
+                <p>${message}</p>
+            `
+        };
+
+        // E-postayı gönder
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).json({ message: 'Mesajınız başarıyla gönderildi' });
+    } catch (error) {
+        console.error('E-posta gönderme hatası:', error);
+        res.status(500).json({ error: 'Mesajınız gönderilirken bir hata oluştu' });
     }
 });
 
