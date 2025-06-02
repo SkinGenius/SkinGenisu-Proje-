@@ -1,9 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// E-posta gönderici yapılandırması
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'skingenius@gmail.com',
+        pass: process.env.EMAIL_PASSWORD // Gmail uygulama şifresi kullanılmalı
+    }
+});
 
 // CORS ayarları
 app.use(cors({
@@ -15,7 +25,7 @@ app.use(cors({
 
 // Middleware
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('.'));
 
 // Hata ayıklama middleware'i
 app.use((req, res, next) => {
@@ -85,40 +95,70 @@ app.post('/api/analyze-skin', upload.single('image'), async (req, res) => {
     }
 });
 
+// İletişim formu endpoint'i
+app.post('/api/contact', async (req, res) => {
+    try {
+        const { name, email, subject, message } = req.body;
+
+        // E-posta içeriği
+        const mailOptions = {
+            from: 'skingenius@gmail.com',
+            to: 'skingenius@gmail.com',
+            subject: `İletişim Formu: ${subject}`,
+            html: `
+                <h2>Yeni İletişim Formu Mesajı</h2>
+                <p><strong>Gönderen:</strong> ${name}</p>
+                <p><strong>E-posta:</strong> ${email}</p>
+                <p><strong>Konu:</strong> ${subject}</p>
+                <p><strong>Mesaj:</strong></p>
+                <p>${message}</p>
+            `
+        };
+
+        // E-postayı gönder
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).json({ message: 'Mesajınız başarıyla gönderildi' });
+    } catch (error) {
+        console.error('E-posta gönderme hatası:', error);
+        res.status(500).json({ error: 'Mesajınız gönderilirken bir hata oluştu' });
+    }
+});
+
 // Önerileri oluştur
 function generateRecommendations(analysis, userInput) {
     const recommendations = [];
 
     // Nem seviyesine göre öneriler
     if (analysis.hydration < 30) {
-        recommendations.push('Cildiniz oldukça kuru görünüyor. Nemlendirici kullanımını artırmanızı öneririz.');
+        recommendations.push('Cildin biraz kuru görünüyor. Ona iyi bakmak için hyaluronik asit veya gliserin gibi nemlendirici içeren bir serum veya krem kullanmayı düşünebilirsin!');
     } else if (analysis.hydration > 70) {
-        recommendations.push('Cildiniz iyi nemlenmiş durumda. Mevcut nemlendirme rutininizi sürdürebilirsiniz.');
+        recommendations.push('Harika! Cildin yeterince nemli. Bu güzel rutinine devam et. Nemlendirici serum veya kremini düzenli kullanmayı sürdür!');
     }
 
     // Yağ seviyesine göre öneriler
     if (analysis.oiliness > 70) {
-        recommendations.push('Cildiniz yağlı görünüyor. Yağ dengesini sağlayan ürünler kullanmanızı öneririz.');
+        recommendations.push('Cildin biraz yağlı olabilir. Yağ dengeleyici ürünlerle daha rahat hissetmeni sağlayabilirsin. Niasinamid içeren bir tonik veya hafif yapılı su bazlı bir nemlendirici deneyebilirsin.');
     } else if (analysis.oiliness < 30) {
-        recommendations.push('Cildiniz kuru görünüyor. Yağ bazlı nemlendiriciler kullanmanızı öneririz.');
+        recommendations.push('Cildin nemlendirilmeye ihtiyaç duyuyor gibi. Yağ bazlı temizleyiciler ve seramid gibi lipidleri içeren yoğun nemlendiriciler cildine çok iyi gelecektir.');
     }
 
     // Hassasiyet seviyesine göre öneriler
     if (analysis.sensitivity > 70) {
-        recommendations.push('Cildiniz hassas görünüyor. Alkol ve parfüm içermeyen ürünler kullanmanızı öneririz.');
+        recommendations.push('Cildin hassas olabilir, ona nazik davranalım. Parfüm, alkol ve sert kimyasallar içermeyen, yatıştırıcı içeriklere sahip (papatya, aloe vera gibi) ürünleri tercih etmelisin.');
     }
 
     // Tespit edilen sorunlara göre öneriler
     userInput.skinIssues.forEach(issue => {
         switch(issue) {
             case 'acne':
-                recommendations.push('Akne sorununuz için salisilik asit içeren ürünler kullanmanızı öneririz.');
+                recommendations.push('Akne sorunların için salisilik asit (BHA) içeren bir temizleyici veya serum kullanmayı düşünebilirsin. Bu, gözenekleri temizlemeye yardımcı olur.');
                 break;
             case 'wrinkles':
-                recommendations.push('Kırışıklıklar için retinol içeren ürünler kullanmanızı öneririz.');
+                recommendations.push('Kırışıklıkların görünümünü hafifletmek için gece rutinine retinol içeren bir serum veya krem eklemeyi düşünebilirsin. Başlangıçta düşük konsantrasyonla başlamak önemlidir.');
                 break;
             case 'dark_spots':
-                recommendations.push('Lekeler için C vitamini içeren ürünler kullanmanızı öneririz.');
+                recommendations.push('Lekelerin görünümünü aydınlatmak için C vitamini veya niacinamide içeren bir serum kullanabilirsin. Güneş koruyucu kullanmayı da unutma!');
                 break;
         }
     });

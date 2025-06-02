@@ -7,6 +7,90 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .privacy-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .privacy-modal-content {
+            position: relative;
+            background-color: var(--bg-color, #ffffff);
+            color: var(--text-color, #333333);
+            margin: 5% auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .privacy-modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-color, #666666);
+            transition: color 0.3s ease;
+        }
+
+        .privacy-modal-close:hover {
+            color: var(--accent-color, #ff4444);
+        }
+
+        .privacy-modal-content h2 {
+            color: var(--heading-color, #1a1a1a);
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .privacy-modal-content p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: var(--text-color, #333333);
+        }
+
+        .privacy-modal-content ul {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+
+        .privacy-modal-content li {
+            margin-bottom: 12px;
+            line-height: 1.8;
+            color: var(--text-color, #333333);
+        }
+
+        /* Dark tema için özel stiller */
+        @media (prefers-color-scheme: dark) {
+            .privacy-modal-content {
+                --bg-color: #1a1a1a;
+                --text-color: #e0e0e0;
+                --heading-color: #ffffff;
+                --accent-color: #ff6b6b;
+            }
+        }
+
+        /* Light tema için özel stiller */
+        @media (prefers-color-scheme: light) {
+            .privacy-modal-content {
+                --bg-color: #ffffff;
+                --text-color: #333333;
+                --heading-color: #1a1a1a;
+                --accent-color: #ff4444;
+            }
+        }
+    </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -21,6 +105,23 @@
                 console.log('Firebase SDK başarıyla yüklendi');
             }
         });
+
+        // Modal işlemleri için fonksiyonlar
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'block';
+        }
+
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'none';
+        }
+
+        // Modal dışına tıklandığında kapatma
+        window.onclick = function(event) {
+            var modal = document.getElementById('privacyModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
     </script>
 </head>
 <body class="login-page">
@@ -57,7 +158,6 @@
                     <img src="https://www.google.com/favicon.ico" alt="Google">
                     Google ile Giriş Yap
                 </button>
-                <a href="#" class="forgot-password" onclick="resetPassword()">Şifremi Unuttum</a>
             </form>
             <form id="registerForm" class="form" onsubmit="event.preventDefault(); register();">
                 <div class="form-group">
@@ -80,7 +180,7 @@
                     <input type="checkbox" id="privacyCheck" required>
                     <label for="privacyCheck">
                         Kişisel verilerimin işlenmesine ve yüz tanıma teknolojisi kullanımına izin veriyorum. 
-                        <a href="#" class="privacy-link">Kişisel Verilerin Korunması</a> hakkında daha fazla bilgi için tıklayın.
+                        <a href="#" class="privacy-link" onclick="openPrivacyModal(); return false;">Kişisel Verilerin Korunması</a> hakkında daha fazla bilgi için tıklayın.
                     </label>
                 </div>
                 <button type="submit" class="submit-btn">Kayıt Ol</button>
@@ -94,6 +194,45 @@
             </form>
         </div>
     </div>
+
+    <!-- Kişisel Verilerin Korunması Modal -->
+    <div id="privacyModal" class="privacy-modal">
+        <div class="privacy-modal-content">
+            <span class="privacy-modal-close" onclick="closePrivacyModal()">&times;</span>
+            <h2>KİŞİSEL VERİLERİN KORUNMASI HAKKINDA AYDINLATMA METNİ</h2>
+            <p>İşbu Aydınlatma Metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında veri sorumlusu sıfatıyla <strong>SKİNGENİUS</strong> tarafından hazırlanmıştır.</p>
+            
+            <p>Tarafınıza ait kimlik, iletişim, görsel ve sağlık verileri; yüz tanıma teknolojisi kullanılarak cilt analizi yapılması ve tarafınıza kişiselleştirilmiş bakım önerilerinin sunulması amacıyla, KVKK'nın 5. ve 6. maddeleri uyarınca işlenmektedir.</p>
+            
+            <p>Toplanan kişisel verileriniz;</p>
+            <ul>
+                <li>Kayıt ve üyelik süreçlerinin yürütülmesi,</li>
+                <li>Yüz tanıma ve cilt analizi işlemlerinin gerçekleştirilmesi,</li>
+                <li>Size özel bakım önerileri sunulması,</li>
+                <li>Sistem güvenliğinin sağlanması,</li>
+                <li>İlgili mevzuat kapsamındaki yasal yükümlülüklerin yerine getirilmesi,</li>
+            </ul>
+            <p>amaçlarıyla işlenmekte; gerekli olması halinde yurt içinde yer alan iş ortakları ve hizmet sağlayıcılarla, veri güvenliğine ilişkin yükümlülükler gözetilerek paylaşılabilmektedir.</p>
+            
+            <p>İlgili kişisel verileriniz, işleme amacının ortadan kalkması veya yasal saklama süresinin sona ermesi halinde silinecek, yok edilecek veya anonim hale getirilecektir.</p>
+            
+            <p>KVKK'nın 11. maddesi uyarınca, kişisel verilerinize ilişkin olarak aşağıdaki haklara sahipsiniz:</p>
+            <ul>
+                <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme,</li>
+                <li>İşlenmişse buna ilişkin bilgi talep etme,</li>
+                <li>İşlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
+                <li>Yurt içinde aktarıldığı üçüncü kişileri bilme,</li>
+                <li>Eksik veya yanlış işlenmiş verilerin düzeltilmesini isteme,</li>
+                <li>KVKK'ya aykırı bir şekilde işlenmiş olması hâlinde silinmesini veya yok edilmesini isteme,</li>
+                <li>İşlemlerin üçüncü kişilere bildirilmesini talep etme,</li>
+                <li>İşlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle kişinin aleyhine bir sonucun ortaya çıkmasına itiraz etme,</li>
+                <li>Kişisel verilerin kanuna aykırı olarak işlenmesi sebebiyle zarara uğraması hâlinde zararın giderilmesini talep etme.</li>
+            </ul>
+            
+            <p>Yukarıda belirtilen kapsamda, yüz tanıma teknolojisi aracılığıyla elde edilen görsel verileriniz ve sağlık verilerinizin işlenmesine, tarafınıza özel bakım önerileri sunulması amacıyla analiz edilmesine açık rıza vermeniz halinde kayıt işleminiz gerçekleştirilecektir.</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html> 

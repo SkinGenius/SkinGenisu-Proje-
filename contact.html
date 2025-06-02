@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - SkinGenius</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+    <script>
+        // Sayfa yüklendiğinde temayı ayarla
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('skinGeniusTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="SkinGenius Logo" class="site-logo">
+            <div class="header-categories">
+                <span class="hamburger-menu" id="openSidebar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-close" id="closeSidebar">&times;</span>
+                <span class="sidebar-title">SkinGenius</span>
+            </div>
+            <div class="menu-section">
+                <h3>Ana Menü</h3>
+                <a href="index.html" class="menu-link">
+                    <span class="material-icons">home</span>
+                    Ana Sayfa
+                </a>
+                <a href="analysis.html" class="menu-link">
+                    <span class="material-icons">face</span>
+                    Cilt Analizi
+                </a>
+                <a href="products.html" class="menu-link">
+                    <span class="material-icons">spa</span>
+                    Ürünler
+                </a>
+                <a href="settings.html" class="menu-link">
+                    <span class="material-icons">settings</span>
+                    Ayarlar
+                </a>
+            </div>
+            <div class="menu-section">
+                <h3>Destek</h3>
+                <a href="faq.html" class="menu-link">
+                    <span class="material-icons">help</span>
+                    Sık Sorulan Sorular
+                </a>
+                <a href="contact.html" class="menu-link active">
+                    <span class="material-icons">contact_support</span>
+                    İletişim
+                </a>
+            </div>
+        </nav>
+
+        <!-- Ana içerik -->
+        <main class="contact-main-content">
+            <div class="contact-page">
+                <div class="contact-info">
+                    <h1>Bizimle İletişime Geçin</h1>
+                    <p class="contact-description">
+                        Sorularınız, önerileriniz veya geri bildirimleriniz için bizimle iletişime geçebilirsiniz. 
+                        En kısa sürede size dönüş yapacağız.
+                    </p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="material-icons">location_on</i>
+                            <div>
+                                <h3>Adres</h3>
+                                <p>Elazığ, Türkiye</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="material-icons">email</i>
+                            <div>
+                                <h3>E-posta</h3>
+                                <p>skingenius@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <div class="form-header">
+                        <h2>İletişim Formu</h2>
+                        <p>Size yardımcı olmak için buradayız</p>
+                    </div>
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Adınız Soyadınız</label>
+                            <div class="input-icon-group">
+                                <i class="material-icons">person</i>
+                                <input type="text" id="name" name="name" placeholder="Adınızı ve soyadınızı girin" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-posta Adresiniz</label>
+                            <div class="input-icon-group">
+                                <i class="material-icons">email</i>
+                                <input type="email" id="email" name="email" placeholder="E-posta adresinizi girin" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Konu</label>
+                            <div class="input-icon-group">
+                                <i class="material-icons">subject</i>
+                                <input type="text" id="subject" name="subject" placeholder="Mesajınızın konusunu girin" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mesajınız</label>
+                            <div class="input-icon-group">
+                                <i class="material-icons">message</i>
+                                <textarea id="message" name="message" rows="5" placeholder="Mesajınızı buraya yazın" required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="contact.js"></script>
+    <script>
+        // Sidebar işlemleri
+        function initializeSidebar() {
+            const openSidebar = document.getElementById('openSidebar');
+            const closeSidebar = document.getElementById('closeSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (openSidebar && closeSidebar && sidebar && overlay) {
+                openSidebar.addEventListener('click', () => {
+                    sidebar.classList.add('open');
+                    overlay.style.display = 'block';
+                });
+                closeSidebar.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initializeSidebar);
+    </script>
+
+    <!-- Footer Başlangıcı -->
+    <footer class="footer-contact">
+        <div class="footer-contact-content">
+            <h3 class="footer-contact-title">SkinGenius</h3>
+            <div class="footer-contact-info">
+                <span>© 2024 SkinGenius. Tüm hakları saklıdır.</span>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Sonu -->
+</body>
+</html> 
