@@ -1,0 +1,18 @@
+## Fikir ve Amaç
+- Yapay zekanın günlük hayattaki artan kullanımı ile birlikte aklımıza gelen, insanların hayatını kolaylaştıran bir fikri hayata geçirmeye karar verdik.
+- Takım arkadaşlarımız ile birlikte yaptığımız beyin fırtınaları ve verimli toplantılar sonucu projeyi tamamlayıp kullanıma hazır hale getirdik.
+https://skin-genius-proje.vercel.app/
+
+## Süreç 
+- Product Owner olarak belirlediğimiz takım arkadaşımız ile isteklerini anlama ve gereksinimleri belirleme doğrultusunda bir toplantı düzenlendi.
+- Toplantı sonucunda alınan notlar doğrultusunda gereksinim analizleri yapıldı.
+- www.ozalyildirim.com üzerinden kanban tekniği kullanarak proje için gereksinimler listelendi.
+- Belirlenen gereksinimler sonucu takım üç kısma bölündü; 
+Frontend kısmı: Oğuzhan Yıldırım ve Alperen Göral.
+Backend kısmı: Sena Ay ve Ali Emir Kürklü.
+Product Owner: Berat Yılmaz.
+- Öncelikle Backend kısmı ile kullanılacak teknolojileri belirleme ve proje işleyiş süreci hakkında bilgilendirme toplantısı yapıldı.
+- Backend kısmının kullanacağı teknolojiler ve Product Owner'ın istekleri temel alınarak Frontend kısmına yapması gerekenler bildirildi.
+- Frontend kısmı web sitesinin temelini atarak projeye başladı ve Backend kısmının yapacaklarnı projeye entegre edebilmesi için ortam oluşturdu.
+- Backen kısmı görevlerini yaparak projeye entegre etti ve projeyi çalışır hale getirdi.
+- Bu süreçte Frontend kısmı çalışmalarına devam etti ve projenin daha kullanıcı dostu olması için gerekenleri yaptı.
