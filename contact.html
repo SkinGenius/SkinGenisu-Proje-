@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="contact.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("TWiKGnzmRO50n4ZR8"); // Public key'i string olarak yazıyoruz
+        })();
+    </script>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -61,10 +68,6 @@
             </div>
             <div class="menu-section">
                 <h3>Destek</h3>
-                <a href="faq.html" class="menu-link">
-                    <span class="material-icons">help</span>
-                    Sık Sorulan Sorular
-                </a>
                 <a href="contact.html" class="menu-link active">
                     <span class="material-icons">contact_support</span>
                     İletişim
@@ -93,7 +96,7 @@
                             <i class="material-icons">email</i>
                             <div>
                                 <h3>E-posta</h3>
-                                <p>skingenius@gmail.com</p>
+                                <p>skingenius12@gmail.com</p>
                             </div>
                         </div>
                     </div>
@@ -104,7 +107,7 @@
                         <h2>İletişim Formu</h2>
                         <p>Size yardımcı olmak için buradayız</p>
                     </div>
-                    <form id="contactForm" class="contact-form">
+                    <form id="contactForm" class="contact-form" onsubmit="return sendEmail(event)">
                         <div class="form-group">
                             <label for="name">Adınız Soyadınız</label>
                             <div class="input-icon-group">

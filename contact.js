@@ -67,34 +67,68 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    contactForm.addEventListener('submit', async function(e) {
+    // Form gönderimini dinle
+    contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            subject: document.getElementById('subject').value,
-            message: document.getElementById('message').value
-        };
+        // Form verilerini al
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
 
-        try {
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
+        // Loading durumunu göster
+        const submitBtn = document.querySelector('.submit-btn');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Gönderiliyor...';
+        submitBtn.disabled = true;
 
-            if (response.ok) {
-                alert('Mesajınız başarıyla gönderildi!');
-                contactForm.reset();
-            } else {
-                throw new Error('Bir hata oluştu');
-            }
-        } catch (error) {
-            alert('Mesajınız gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
-            console.error('Error:', error);
-        }
+        // EmailJS ile e-posta gönder
+        emailjs.send("skingenius_serviceid", "template_jsa9nri", {
+            from_name: name,
+            from_email: email,
+            subject: subject,
+            message: message,
+            to_email: "skingenius12@gmail.com"
+        })
+        .then(function() {
+            // Başarılı gönderim
+            showNotification('Mesajınız başarıyla gönderildi!', 'success');
+            contactForm.reset();
+        })
+        .catch(function(error) {
+            // Hata durumu
+            showNotification('Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+            console.error('EmailJS error:', error);
+        })
+        .finally(function() {
+            // Loading durumunu kaldır
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        });
     });
+
+    // Bildirim gösterme fonksiyonu
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <span class="material-icons">${type === 'success' ? 'check_circle' : 'error'}</span>
+            ${message}
+        `;
+        document.body.appendChild(notification);
+
+        // Bildirimi göster
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+
+        // Bildirimi kaldır
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 3000);
+    }
 }); 
