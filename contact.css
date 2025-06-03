@@ -16,8 +16,8 @@
     --border-color: #ffeef2;
     --input-bg: #ffffff;
     --shadow-color: rgba(255, 182, 193, 0.12);
-    --gradient-start: #ff8ba3;
-    --gradient-end: #ff6b8b;
+    --gradient-start: #ffa4b8;
+    --gradient-end: #ffb6c1;
 }
 
 [data-theme="dark"] {
@@ -28,8 +28,8 @@
     --border-color: #404040;
     --input-bg: #2d2d2d;
     --shadow-color: rgba(0, 0, 0, 0.3);
-    --gradient-start: #ff6b8b;
-    --gradient-end: #ff8ba3;
+    --gradient-start: #ffa4b8;
+    --gradient-end: #ffb6c1;
 }
 
 .contact-info {

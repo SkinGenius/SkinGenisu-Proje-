@@ -278,13 +278,38 @@ function updateSidebarContent() {
         document.getElementById('userEmail').textContent = user.email;
         
         // Profil resmini güncelle
-        const profileImage = document.getElementById('userProfileImage');
-        if (profileImage) {
-            if (user.photoURL) {
-                profileImage.src = user.photoURL;
-            } else {
-                profileImage.src = 'default-avatar.png';
-            }
+        const profileImageContainer = document.querySelector('#userProfile .profile-section');
+        let profileImageElement = document.getElementById('userProfileImage');
+
+        // Mevcut profil resmini kaldır (varsa)
+        if (profileImageElement) {
+            profileImageElement.remove();
+        }
+
+        if (user.photoURL) {
+            // Google profil fotoğrafı varsa img etiketi oluştur
+            profileImageElement = document.createElement('img');
+            profileImageElement.id = 'userProfileImage';
+            profileImageElement.className = 'profile-image'; // Apply existing styles
+            profileImageElement.alt = 'User Avatar';
+            profileImageElement.src = user.photoURL;
+            profileImageContainer.insertBefore(profileImageElement, profileImageContainer.firstChild); // Add at the beginning
+        } else {
+            // Profil fotoğrafı yoksa baş harfi olan div oluştur
+            const initials = (user.displayName || user.email)[0].toUpperCase();
+            profileImageElement = document.createElement('div');
+            profileImageElement.id = 'userProfileImage';
+            profileImageElement.className = 'profile-image'; // Apply existing styles
+            profileImageElement.textContent = initials;
+            profileImageElement.style.backgroundColor = generateColor(initials); // Dinamik renk ataması
+            profileImageElement.style.color = 'white';
+            profileImageElement.style.display = 'flex';
+            profileImageElement.style.alignItems = 'center';
+            profileImageElement.style.justifyContent = 'center';
+            profileImageElement.style.fontSize = '1.5rem'; // Adjust font size as needed
+            profileImageElement.style.fontWeight = 'bold';
+
+            profileImageContainer.insertBefore(profileImageElement, profileImageContainer.firstChild);
         }
     } else {
         // Kullanıcı giriş yapmamış
@@ -638,3 +663,25 @@ window.showNotification = function(message, type = '') {
         setTimeout(() => notification.remove(), 400);
     }, 2600);
 };
+
+// Baş harfe göre renk üreten basit bir fonksiyon (isteğe bağlı olarak geliştirilebilir)
+function generateColor(initial) {
+    const colors = [
+        '#FF6347', // Tomato
+        '#FF4500', // OrangeRed
+        '#FF8C00', // DarkOrange
+        '#FFD700', // Gold
+        '#ADFF2F', // GreenYellow
+        '#7FFF00', // Chartreuse
+        '#00FA9A', // MediumSpringGreen
+        '#00FFFF', // Cyan
+        '#1E90FF', // DodgerBlue
+        '#4169E1', // RoyalBlue
+        '#8A2BE2', // BlueViolet
+        '#9932CC', // DarkOrchid
+        '#FF69B4', // HotPink
+        '#FF1493'  // DeepPink
+    ];
+    const index = initial.charCodeAt(0) % colors.length;
+    return colors[index];
+}
