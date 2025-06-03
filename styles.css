@@ -487,6 +487,12 @@ main {
     margin-left: 20px;
     margin-top: 0px;
     display: block;
+    transition: all 0.3s ease;
+}
+
+header a:hover .site-logo {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
 }
 
 .content-boxes {
