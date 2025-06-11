@@ -148,6 +148,12 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             resultsContainer.style.opacity = '1';
             resultsContainer.style.transform = 'translateY(0)';
+            
+            // Sonuçlar bölümüne yumuşak scroll
+            resultsContainer.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
         }, 100);
     }
 
