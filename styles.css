@@ -1129,15 +1129,15 @@ select:focus {
 [data-theme="dark"] .skin-type-card:hover,
 [data-theme="dark"] .issue-content:hover,
 [data-theme="dark"] .upload-area:hover {
-    background-color: #363636;
-    border-color: var(--primary-color);
+    background-color: #363636 !important;
+    border-color: var(--primary-color) !important;
 }
 
 /* Koyu temada seçili öğeler */
 [data-theme="dark"] .skin-type-card.selected,
 [data-theme="dark"] .skin-issue-card input[type="checkbox"]:checked + .issue-content {
-    background-color: #404040;
-    border-color: var(--primary-color);
+    background-color: #404040 !important;
+    border-color: var(--primary-color) !important;
 }
 
 /* Koyu temada form elemanları */
@@ -1145,24 +1145,24 @@ select:focus {
 [data-theme="dark"] input[type="text"],
 [data-theme="dark"] input[type="email"],
 [data-theme="dark"] input[type="password"] {
-    background-color: #363636;
-    color: #ffffff;
-    border-color: var(--border-color);
+    background-color: #363636 !important;
+    color: #ffffff !important;
+    border-color: var(--border-color) !important;
 }
 
 /* Koyu temada butonlar */
 [data-theme="dark"] .save-settings-btn {
-    background-color: var(--button-bg);
-    color: var(--button-text);
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
 }
 
 [data-theme="dark"] .reset-settings-btn {
-    background-color: #363636;
-    color: #ffffff;
+    background-color: #363636 !important;
+    color: #ffffff !important;
 }
 
 [data-theme="dark"] .reset-settings-btn:hover {
-    background-color: #404040;
+    background-color: #404040 !important;
 }
 
 /* Analiz Sayfası Stilleri */
@@ -1517,28 +1517,293 @@ select:focus {
     color: #ff8ba3;
 }
 
-[data-theme="dark"] .recommendations-summary h3 {
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.recommendations-summary {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+}
+
+.recommendations-summary h3 {
+    color: #ffa4b8;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.recommendation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recommendation-list li {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    border-left: 4px solid #ffa4b8;
+    box-shadow: 0 5px 15px rgba(255, 164, 184, 0.08);
+    transition: all 0.3s ease;
+}
+
+.recommendation-list li:last-child {
+    margin-bottom: 0;
+}
+
+.recommendation-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 164, 184, 0.15);
+    background: #fff0f3;
+}
+
+.recommendation-list li h4 {
+    color: #ff6b95;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.recommendation-list li p {
+    margin: 0;
+    color: #2d3436;
+    line-height: 1.6;
+}
+
+/* Ana Sayfa Analiz Kutusu Stilleri */
+.analysis-box {
+    background: linear-gradient(135deg, #fff9fb 0%, #ffffff 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    margin: 40px auto; /* Ortalamak ve üstten boşluk vermek için */
+    max-width: 1200px; /* Genişliği hero bölümü ile aynı yap */
+    box-shadow: 0 10px 30px rgba(255, 164, 184, 0.08);
+    text-align: center; /* Kutunun içindeki her şeyi ortala */
+}
+
+.analysis-box-content {
+    display: flex; /* Flexbox kullanarak içerik düzeni */
+    align-items: center;
+    gap: 4rem;
+    justify-content: center; /* Ana eksende (varsayılan row) ortala */
+    flex-wrap: wrap; /* Küçük ekranlarda alt alta gelmesi için */
+}
+
+.analysis-box-text {
+    flex: 1; /* Mevcutsa yer kaplasın */
+    min-width: 300px; /* Minimum genişlik */
+    display: flex; /* İçeriği flexbox ile hizala */
+    flex-direction: column; /* Elemanları alt alta sırala */
+    justify-content: center; /* Dikey eksende ortala */
+    align-items: center; /* Yatay eksende ortala */
+    text-align: center; /* Metni ortala (yedek) */
+}
+
+.analysis-box-text h2 {
+    color: #F48FB1; /* Başlık rengi */
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.analysis-box-text p {
+    color: #666; /* Paragraf rengi */
+    font-size: 1.1rem;
+    margin-bottom: 2rem; /* Alt boşluk artırıldı */
+    line-height: 1.6;
+}
+
+.analysis-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem; /* Alt boşluk artırıldı */
+    text-align: left; /* Liste maddelerini sola hizala */
+}
+
+.analysis-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+.analysis-features .material-icons {
+    color: #ffa4b8;
+    font-size: 1.2rem;
+}
+
+.analysis-button {
+    background: linear-gradient(45deg, #ffa4b8, #ffb6c1); /* Pembe gradient */
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 164, 184, 0.2);
+    display: inline-flex; /* Butonu ortalamak için inline-flex yapıldı */
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem; /* Üstten boşluk */
+}
+
+.analysis-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 164, 184, 0.25);
+    background: linear-gradient(45deg, #ff8ba3, #ffa4b8);
+}
+
+.analysis-button .material-icons {
+    font-size: 1.5rem;
+}
+
+.analysis-box-image {
+    flex: 1; /* Mevcutsa yer kaplasın */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px; /* Maksimum genişlik */
+}
+
+.analysis-box-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.analysis-box-image img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+    .analysis-box-content {
+        flex-direction: column; /* Küçük ekranlarda alt alta */
+        gap: 2rem;
+    }
+
+    .analysis-box-text {
+        text-align: center; /* Metni ortala */
+    }
+
+    .analysis-features {
+        text-align: center; /* Liste maddelerini ortala */
+    }
+     .analysis-features li {
+        justify-content: center; /* Liste madde içeriğini ortala */
+     }
+
+    .analysis-box-image {
+        order: -1; /* Resmi metnin üstüne al */
+    }
+}
+
+/* Koyu tema için stiller */
+[data-theme="dark"] .analysis-box {
+    background: linear-gradient(135deg, #232323 0%, #2d2d2d 100%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 164, 184, 0.15);
+}
+
+[data-theme="dark"] .analysis-box-text h2 {
     color: #ff8ba3;
 }
 
-[data-theme="dark"] .recommendation-list li {
-    background: #232323;
-    border-left: 4px solid #ff8ba3;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
+[data-theme="dark"] .analysis-box-text p,
+[data-theme="dark"] .analysis-features li {
+    color: #ccc;
 }
 
-[data-theme="dark"] .recommendation-list li:hover {
-    background: #2d2d2d;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] .recommendation-list li h4 {
+[data-theme="dark"] .analysis-features .material-icons {
     color: #ff8ba3;
 }
 
-[data-theme="dark"] .recommendation-list li p {
-    color: #ffffff;
+[data-theme="dark"] .analysis-button {
+    background: linear-gradient(45deg, #ff8ba3, #ffa4b8);
+    box-shadow: 0 5px 15px rgba(255, 139, 163, 0.3);
+}
+
+[data-theme="dark"] .analysis-button:hover {
+    background: linear-gradient(45deg, #ffa4b8, #ffb6c1);
+    box-shadow: 0 8px 20px rgba(255, 139, 163, 0.4);
+}
+
+[data-theme="dark"] .analysis-box-image img {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .analysis-box-image img:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Cilt Tipi ve Sorun Seçimi */
+.skin-type-options,
+.skin-issues-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.skin-type-option,
+.skin-issue-option {
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.skin-type-option:hover,
+.skin-issue-option:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.skin-type-option.selected,
+.skin-issue-option.selected {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+}
+
+/* Açık tema için özel stiller */
+[data-theme="light"] .skin-type-option.selected,
+[data-theme="light"] .skin-issue-option.selected {
+    background-color: #e6e6e6 !important; /* Belirgin, açık gri */
+    color: #333 !important; /* Okunabilir bir koyu metin rengi */
+    border-color: #b0b0b0 !important; /* Daha koyu gri kenarlık */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1) !important; /* Hafif gölgeyi artır */
+}
+
+[data-theme="light"] .skin-type-option:hover,
+[data-theme="light"] .skin-issue-option:hover {
+    border-color: var(--primary-color);
+    background-color: #f5f5f5; /* Hover'da daha açık gri */
+}
+
+[data-theme="light"] .skin-type-option.selected:hover,
+[data-theme="light"] .skin-issue-option.selected:hover {
+    background-color: #dcdcdc; /* Seçili durumda hover için biraz daha koyu gri */
+    color: #333;
 }
 
 /* Cilt Tipi Kartları */
@@ -2115,7 +2380,6 @@ select:focus {
     .analysis-features {
         text-align: center; /* Liste maddelerini ortala */
     }
-
      .analysis-features li {
         justify-content: center; /* Liste madde içeriğini ortala */
      }
@@ -2162,3 +2426,19 @@ select:focus {
 [data-theme="dark"] .analysis-box-image img:hover {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 } 
+
+/* Açık temada seçili cilt tipi kartları için yüksek öncelikli stil */
+[data-theme="light"] .skin-type-card.selected {
+    background-color: #ededed !important; /* Biraz daha koyu, açık gri */
+    color: #333 !important; /* Okunabilir bir koyu metin rengi */
+    border-color: #ffd6e0 !important; /* Çerçevenin orijinal rengi */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important; /* Hafif gölge */
+}
+
+/* Açık temada seçili cilt sorunu kutucukları için yüksek öncelikli stil */
+[data-theme="light"] .skin-issue-card input[type="checkbox"]:checked + .issue-content {
+    background-color: #ededed !important; /* Biraz daha koyu, açık gri */
+    color: #333 !important; /* Okunabilir bir koyu metin rengi */
+    border-color: #ffd6e0 !important; /* Çerçevenin orijinal rengi */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important; /* Hafif gölge */
+}
