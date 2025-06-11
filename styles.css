@@ -453,14 +453,21 @@ footer {
     display: flex;
     align-items: center;
     padding: 10px;
-    color: #333;
+    color: var(--menu-text);
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px; /* Köşeleri biraz daha yuvarla */
     transition: all 0.3s ease;
+    background-color: var(--menu-bg); /* Arka plan rengini tema değişkeninden al */
+    border: 1px solid var(--border-color); /* Çerçeve ekle */
+    margin-bottom: 8px; /* Seçenekler arasında boşluk */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Hafif gölge */
 }
 
 .sidebar-menu li a:hover {
-    background-color: #f8f8f8;
+    background-color: var(--menu-hover);
+    border-color: var(--primary-color); /* Hover'da çerçeve rengini değiştir */
+    transform: translateY(-1px); /* Hafif yukarı kalkma efekti */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Hover'da daha belirgin gölge */
 }
 
 body.login-page .container {
@@ -834,12 +841,14 @@ select:focus {
 
 /* Aktif Menü Linki */
 .menu-link.active {
-    background-color: #fff5f5;
-    color: #ff6b6b;
+    background-color: transparent !important; /* Kutucuğun içini şeffaf yap */
+    color: var(--primary-color) !important; /* Yazı rengini temadaki pembe yap */
+    border-color: var(--primary-color) !important; /* Ana renk çerçeve */
+    box-shadow: none !important; /* Gölgeyi kaldır */
 }
 
 .menu-link.active .material-icons {
-    color: #ff6b6b;
+    color: #333 !important; /* Sembol rengini siyah bırak */
 }
 
 /* Tema değişkenleri */
@@ -849,7 +858,7 @@ select:focus {
     --header-bg: #ffffff;
     --sidebar-bg: #ffffff;
     --card-bg: #ffffff;
-    --border-color: #ffeef2;
+    --border-color: #e0e0e0; /* Daha belirgin açık gri kenarlık rengi */
     --shadow-color: rgba(255, 182, 193, 0.12);
     --primary-color: #ffa4b8;
     --secondary-color: #ffb6c1;
