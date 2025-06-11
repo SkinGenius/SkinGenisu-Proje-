@@ -40,6 +40,11 @@ function saveSettings() {
     // Tema ve yazı boyutunu uygula
     applyTheme(settings.theme);
     applyFontSize(settings.fontSize);
+
+    // Başarılı kayıt bildirimi göster
+    if (window.showNotification) {
+        window.showNotification('Ayarlar başarıyla kaydedildi!', 'success');
+    }
 }
 
 // Ayarları sıfırla
