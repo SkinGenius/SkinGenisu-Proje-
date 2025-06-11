@@ -196,6 +196,66 @@ const productsDatabase = {
             precautions: "C vitamini ile birlikte kullanmayın."
         },
         {
+            name: "Bakuchiol",
+            type: "aktif",
+            benefits: "Yağlı ciltlerde kırışıklıkları azaltır, cildi yeniler ve yağ dengesini sağlar. Retinol alternatifi olarak kullanılabilir.",
+            usage: "Gece rutininde, temiz cilde 2-3 damla uygulayın.",
+            skinTypes: ["Yağlı", "Karma", "Hassas"],
+            effectLevel: 5,
+            image: "bakuchiol.jpg",
+            precautions: "Güneş koruyucu ile birlikte kullanın."
+        },
+        {
+            name: "Matrixyl 3000",
+            type: "aktif",
+            benefits: "Yağlı ciltlerde kırışıklıkları azaltır, cilt elastikiyetini artırır ve yağ dengesini korur.",
+            usage: "Serum olarak sabah ve akşam kullanın.",
+            skinTypes: ["Yağlı", "Karma"],
+            effectLevel: 4,
+            image: "matrixyl.jpg",
+            precautions: "Günlük kullanıma uygundur."
+        },
+        {
+            name: "Yeşil Çay Ekstraktı",
+            type: "bitki",
+            benefits: "Yağlı cildi dengeleyen, antioksidan özellikleri ile kırışıklıkları önleyen ve cildi koruyan etkiye sahiptir.",
+            usage: "Tonik olarak sabah ve akşam kullanın.",
+            skinTypes: ["Yağlı", "Karma"],
+            effectLevel: 4,
+            image: "green-tea.jpg",
+            precautions: "Kaliteli ve doğal yeşil çay ekstraktı kullanın."
+        },
+        {
+            name: "Hyaluronik Asit (Düşük Moleküler)",
+            type: "asit",
+            benefits: "Yağlı ciltlerde nem dengesini sağlar, kırışıklıkları azaltır ve cildi dolgunlaştırır.",
+            usage: "Temiz cilde 2-3 damla uygulayın.",
+            skinTypes: ["Yağlı", "Karma"],
+            effectLevel: 5,
+            image: "hyaluronic-acid.jpg",
+            precautions: "Güneş koruyucu ile birlikte kullanın."
+        },
+        {
+            name: "Resveratrol",
+            type: "aktif",
+            benefits: "Yağlı ciltlerde antioksidan etki gösterir, kırışıklıkları önler ve cildi korur.",
+            usage: "Serum olarak sabah ve akşam kullanın.",
+            skinTypes: ["Yağlı", "Karma"],
+            effectLevel: 4,
+            image: "resveratrol.jpg",
+            precautions: "Güneş koruyucu ile birlikte kullanın."
+        },
+        {
+            name: "Peptit Kompleksi",
+            type: "aktif",
+            benefits: "Yağlı ciltlerde kırışıklıkları azaltır, cilt elastikiyetini artırır ve yağ dengesini korur.",
+            usage: "Serum olarak gece rutininde kullanın.",
+            skinTypes: ["Yağlı", "Karma"],
+            effectLevel: 5,
+            image: "peptides.jpg",
+            precautions: "Günlük kullanıma uygundur."
+        },
+        {
             name: "Limon",
             type: "bitki",
             benefits: "Yağlı cildi dengeleyici ve parlaklık verici özellikleri vardır.",
@@ -599,58 +659,49 @@ function filterProducts() {
 
     let products = [];
 
-    // Eğer sadece kızarıklık seçiliyse, doğrudan kızarıklık ürünlerini göster
-    if (issue === 'redness') {
-        products = productsDatabase.redness || [];
-    } else if (skinCondition !== 'all' && issue !== 'all') {
-        // Hem cilt tipi hem sorun seçiliyse, iki kategoriye de uygun ürünlerin birleşimini al
-        let skinProducts = productsDatabase[skinCondition] || [];
-        let issueProducts = productsDatabase[issue] || [];
-        // Cilt tipine uygun ve sorun kategorisinde olan ürünleri de dahil et
-        // 1. Cilt tipine uygun olup açıklamasında sorun anahtar kelimesi geçenler
-        const issueKeywords = {
-            'acne': ['sivilce', 'akne', 'yağlı', 'acne', 'pimple', 'oil'],
-            'wrinkles': ['kırışıklık', 'yaşlanma', 'anti-aging', 'wrinkle', 'aging'],
-            'darkSpots': ['leke', 'pigmentasyon', 'renk', 'spot', 'pigment', 'tone'],
-            'dryness': ['kuru', 'nem', 'hidrasyon', 'dry', 'moisture', 'hydration']
+    // Tüm ürünleri birleştir
+    const allProducts = Object.values(productsDatabase).flat();
+
+    // Filtreleme fonksiyonu
+    const filterBySkinType = (product) => {
+        if (skinCondition === 'all') return true;
+        
+        // Cilt tipi eşleştirme haritası
+        const skinTypeMap = {
+            'dry': ['Kuru'],
+            'oily': ['Yağlı'],
+            'combination': ['Karma'],
+            'sensitive': ['Hassas']
         };
+
+        const targetTypes = skinTypeMap[skinCondition] || [];
+        return product.skinTypes.some(type => targetTypes.includes(type));
+    };
+
+    const filterByIssue = (product) => {
+        if (issue === 'all') return true;
+
+        const issueKeywords = {
+            'acne': ['sivilce', 'akne', 'yağlı', 'acne', 'pimple', 'oil', 'sebum', 'gözenek'],
+            'wrinkles': ['kırışıklık', 'yaşlanma', 'anti-aging', 'wrinkle', 'aging', 'elastikiyet'],
+            'darkSpots': ['leke', 'pigmentasyon', 'renk', 'spot', 'pigment', 'tone', 'aydınlatma'],
+            'redness': ['kızarıklık', 'tahriş', 'hassas', 'yatıştırıcı', 'sakinleştirici', 'inflamasyon'],
+            'dryness': ['kuru', 'nem', 'hidrasyon', 'dry', 'moisture', 'hydration', 'nemlendirici']
+        };
+
         const keywords = issueKeywords[issue] || [];
-        let filteredSkinProducts = skinProducts.filter(product => {
-            const benefits = product.benefits.toLowerCase();
-            const usage = product.usage.toLowerCase();
-            return keywords.some(keyword => benefits.includes(keyword) || usage.includes(keyword));
-        });
-        // 2. Sorun kategorisindeki ürünlerden cilt tipine uygun olanlar
-        let filteredIssueProducts = issueProducts.filter(product => {
-            return product.skinTypes.map(t => t.toLowerCase()).includes(skinCondition);
-        });
-        // Birleştir ve tekrar edenleri kaldır
-        products = [...filteredSkinProducts, ...filteredIssueProducts].filter((item, index, arr) =>
-            arr.findIndex(p => p.name === item.name) === index
-        );
-    } else if (skinCondition !== 'all') {
-        products = productsDatabase[skinCondition] || [];
-    } else {
-        // Tümü seçiliyse tüm ürünleri birleştir
-        Object.values(productsDatabase).forEach(categoryProducts => {
-            products = products.concat(categoryProducts);
-        });
-        // Sorun filtresi varsa, anahtar kelimeyle filtrele
-        if (issue !== 'all') {
-            const issueKeywords = {
-                'acne': ['sivilce', 'akne', 'yağlı', 'acne', 'pimple', 'oil'],
-                'wrinkles': ['kırışıklık', 'yaşlanma', 'anti-aging', 'wrinkle', 'aging'],
-                'darkSpots': ['leke', 'pigmentasyon', 'renk', 'spot', 'pigment', 'tone'],
-                'dryness': ['kuru', 'nem', 'hidrasyon', 'dry', 'moisture', 'hydration']
-            };
-            const keywords = issueKeywords[issue] || [];
-            products = products.filter(product => {
-                const benefits = product.benefits.toLowerCase();
-                const usage = product.usage.toLowerCase();
-                return keywords.some(keyword => benefits.includes(keyword) || usage.includes(keyword));
-            });
-        }
-    }
+        const productText = `${product.benefits} ${product.usage} ${product.name}`.toLowerCase();
+        
+        return keywords.some(keyword => productText.includes(keyword));
+    };
+
+    // Ürünleri filtrele
+    products = allProducts.filter(product => filterBySkinType(product) && filterByIssue(product));
+
+    // Tekrar eden ürünleri kaldır
+    products = products.filter((item, index, arr) =>
+        arr.findIndex(p => p.name === item.name) === index
+    );
 
     // Ürünleri tabloya ekle
     products.forEach(product => {
@@ -674,6 +725,17 @@ function filterProducts() {
         row.addEventListener('click', () => showProductDetail(product));
         tableBody.appendChild(row);
     });
+
+    // Eğer hiç ürün bulunamadıysa mesaj göster
+    if (products.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td colspan="5" class="no-products">
+                Seçilen kriterlere uygun ürün bulunamadı. Lütfen farklı filtreler deneyin.
+            </td>
+        `;
+        tableBody.appendChild(row);
+    }
 }
 
 // Analiz sonuçlarına göre filtreleri ayarla
